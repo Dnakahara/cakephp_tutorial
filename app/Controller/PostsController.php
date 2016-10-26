@@ -2,9 +2,40 @@
 class PostsController extends AppController{
 	public $helpers = array('Html','Form','Flash');
 	public $components = array('Flash');
+	public $uses = array('Post','User');
+	
+	public function isAuthorized($user = null){
+		//all author can add posts.
+		if(in_array($this->action,array('add','index','view'))){
+			return true;
+		}
+
+		//all author can edit and delete his own posts.
+		if(in_array($this->action,array('edit','delete'))){
+			$postId = (int)$this->request->params['pass'][0];
+			if($this->Post->isOwnedBy($postId,$user['id'])){
+				return true;
+			}
+		}
+		return parent::isAuthorized($user);
+	}
+
+	public function beforeFilter(){
+		parent::beforeFilter();
+
+		if(!$this->isAuthorized($this->Auth->user())){
+			$this->redirect(array(
+				'controller'=>'posts',
+				'action'=>'index',
+			));
+		}	
+	}
 
 	public function index(){
-		$this->set('posts', $this->Post->find('all'));
+		$this->set('posts',$this->Post->latestAllPosts()); 
+		$this->set('username',$this->Auth->user('username'));
+		$this->set('user_id',$this->Auth->user('id'));
+		//$this->set('authorname',$this->User->find('');
 	}
 
 	public function view($id = null){
@@ -22,10 +53,10 @@ class PostsController extends AppController{
 	public function add(){
 		if($this->request->is('post')){
 			$this->Post->create();
-			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
+			$this->request->data['Post']['user_id'] = $user_id;
 			if($this->Post->save($this->request->data)){
 				$this->Flash->success(__('Your post has been saved.'));
-				return $this->redirect(array('action'=>'index'));
+				$this->redirect(array('action'=>'index'));
 			}
 		}
 	}
@@ -44,7 +75,7 @@ class PostsController extends AppController{
 			$this->Post->id = $id;
 			if($this->Post->save($this->request->data)){
 				$this->Flash->success(__('Your post has been updated.'));
-				return $this->redirect(array('action'=>'index'));
+				$this->redirect(array('action'=>'index'));
 			}
 			$this->Flash->error(__('Unable to update your post.'));
 		}
@@ -69,23 +100,6 @@ class PostsController extends AppController{
 			);
 		}
 		return $this->redirect(array('action'=>'index'));
-	}
-
-	public function isAuthorized($user){
-		//all author can add postis.
-		if($this->action==='add'){
-			return true;
-		}
-
-		//all author can edit and delete his posts.
-		if($in_array($this->action,array('edit','delete'))){
-			$postId = (int)$this->request->params['pass'][0];
-			if($this->Post->isOwnedBy($postId,$user['id'])){
-				return true;
-			}
-
-			return parent::isAuthorized($user);
-		}
 	}
 }
 

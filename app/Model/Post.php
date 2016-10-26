@@ -11,6 +11,18 @@ class Post extends AppModel {
 	);
 
 	public function isOwnedBy($post,$user){
-		return $this->field('id',array('id'=>$post,'usr_id'=>$user)) !== false;
+		//postテーブルの中に idが$post, postのuser_idが$userの列が存在するならtrue 
+		$conditions = array(
+			'id'=>$post,
+			'user_id'=>$user
+		);
+		return $this->field('id',$conditions) !== false;
+	}
+
+	public function latestAllPosts(){
+		return $this->find('all',array(
+			'order'=>array(
+				'Post.created'=>'desc'
+			)));
 	}
 }
