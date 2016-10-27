@@ -1,6 +1,6 @@
 <?php
 class Attachment extends AppModel{
-	public $belongsTo array(
+	public $belongsTo = array(
 		'Post'=>array(
 			'className'=>'Post',
 			'foreignKey'=>'post_id'
