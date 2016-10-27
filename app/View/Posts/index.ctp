@@ -1,8 +1,6 @@
 <!-- File: /app/View/Posts/index.ctp -->
 <h1>Blog posts</h1>
-<?php if(false): ?>
-<p>他のユーザーの記事は編集・削除できません</p>
-<?php endif; ?>
+<?php echo $this->Flash->render('authorityError'); ?>
 <?php 
 echo $this->Html->link('Add Post',array(
 	'controller'=>'posts',

@@ -1,9 +1,11 @@
 <?php
 class PostsController extends AppController{
 	public $helpers = array('Html','Form','Flash');
-	public $components = array('Flash');
-	public $uses = array('Post','User');
-	
+	public $components = array('Flash','Paginator','Search.Prg');
+	public $uses = array('Post','User');	
+	public $actsAs = array('Search.Searchable');
+	public $presetVars = true;
+
 	public function isAuthorized($user = null){
 		//all author can add posts.
 		if(in_array($this->action,array('add','index','view'))){
@@ -24,7 +26,9 @@ class PostsController extends AppController{
 		parent::beforeFilter();
 
 		if(!$this->isAuthorized($this->Auth->user())){
-			$this->Flash('');
+			$this->Flash->set('<p>他の人の記事は編集・削除できません</p>',array(
+				'key'=>'authorityError'
+			));
 			$this->redirect(array(
 				'controller'=>'posts',
 				'action'=>'index',
@@ -37,6 +41,12 @@ class PostsController extends AppController{
 		$this->set('username',$this->Auth->user('username'));
 		$this->set('user_id',$this->Auth->user('id'));
 		//$this->set('authorname',$this->User->find('');
+		/*
+		$this->Prg->commonProcess();
+		$this->paginate = array(
+			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
+		);
+		 */
 	}
 
 	public function view($id = null){

@@ -1,5 +1,4 @@
 <?php
-
 class Post extends AppModel {
 	public $validate = array(
 		'title'=>array(
@@ -8,6 +7,31 @@ class Post extends AppModel {
 		'body'=>array(
 			'rule'=>'notBlank'
 		)
+	);
+
+	public $hasMany = array(
+		'Attachment'=>array(
+			'className'=>'Attachment',
+			'foreignKey'=>'post_id',
+		)
+	);
+
+	public $belongsTo = array(
+		'Category'=>array(
+			'className'=>'Category',
+			'foreignKey'=>'category_id'
+		)
+	);
+	
+	public $hasAndBelongsToMany = array(
+		'Tag'=>array(
+			'className'=>'Tag',
+			'joinTable'=>'posts_tags',
+			'foreignKey'=>'post_id',
+			'associationForeignKey'=>'tag_id',
+			'unique'=>true,
+			'with'=>'PostTag',
+		),
 	);
 
 	public function isOwnedBy($post,$user){
@@ -23,6 +47,7 @@ class Post extends AppModel {
 		return $this->find('all',array(
 			'order'=>array(
 				'Post.created'=>'desc'
-			)));
+			)
+		));
 	}
 }
