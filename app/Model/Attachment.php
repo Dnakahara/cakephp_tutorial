@@ -2,8 +2,13 @@
 class Attachment extends AppModel{
 	public $actsAs = array(
 		'Upload.Upload'=>array(
-			'image'=>array(
-
+			'attachment'=>array(
+				'thumbnailSizes'=>array(
+					'xvga'=>'1024x768',
+					'vga'=>'640x480',
+					'thumb'=>'80x80',
+				),
+				'maxsize'=>209715200,
 			)
 		)
 	);

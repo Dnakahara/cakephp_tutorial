@@ -1,5 +1,7 @@
 <?php
 class Post extends AppModel {
+	public $actsAs = array('Search.Searchable');
+
 	public $validate = array(
 		'title'=>array(
 			'rule'=>'notBlank'
@@ -10,7 +12,7 @@ class Post extends AppModel {
 	);
 
 	public $hasMany = array(
-		'Attachment'=>array(
+		'Image'=>array(
 			'className'=>'Attachment',
 			'foreignKey'=>'post_id',
 		)

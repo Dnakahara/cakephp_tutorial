@@ -2,8 +2,7 @@
 class PostsController extends AppController{
 	public $helpers = array('Html','Form','Flash');
 	public $components = array('Flash','Paginator','Search.Prg');
-	public $uses = array('Post','User');	
-	public $actsAs = array('Search.Searchable');
+	public $uses = array('Post','User','Attachment','Tag','Category');	
 	public $presetVars = true;
 
 	public function isAuthorized($user = null){
@@ -40,7 +39,7 @@ class PostsController extends AppController{
 		$this->set('posts',$this->Post->latestAllPosts()); 
 		$this->set('username',$this->Auth->user('username'));
 		$this->set('user_id',$this->Auth->user('id'));
-		//$this->set('authorname',$this->User->find('');
+		//$this->set('authorname',$this->Post->find('');
 		/*
 		$this->Prg->commonProcess();
 		$this->paginate = array(
@@ -63,13 +62,19 @@ class PostsController extends AppController{
 
 	public function add(){
 		if($this->request->is('post')){
+			debug($this->request->data);
+			exit();
 			$this->Post->create();
 			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
-			if($this->Post->save($this->request->data)){
+			
+			if($this->Post->save($this->request->data)
+			   /*&& $this->Post->saveAssociated($this->request->data)*/){
 				$this->Flash->success(__('Your post has been saved.'));
 				$this->redirect(array('action'=>'index'));
 			}
 		}
+		$this->set('category',$this->Category->find('all'));
+		$this->set('tag',$this->Tag->find('all'));
 	}
 
 	public function edit($id = null){
