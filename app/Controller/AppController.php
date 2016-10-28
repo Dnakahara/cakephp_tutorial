@@ -64,4 +64,9 @@ class AppController extends Controller {
 		//deny on default
 		return false;
 	}
+
+	public function debugp(){
+		debug($this->request->data);
+		exit();
+	}	
 }

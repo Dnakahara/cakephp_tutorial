@@ -26,6 +26,13 @@ echo $this->Html->link('Log out',array(
 	'action'=>'logout'
 ));
 ?><?php endif; ?>
+<legend>検索</legend>
+<?php 
+echo $this->Form->input('category',array(
+	'options'=>$category,
+	'empty'=>'未選択',
+));
+?>
 <table>
 	<tr>
 		<th>Id</th>

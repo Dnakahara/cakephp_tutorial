@@ -1,22 +1,25 @@
-[![Build Status](https://travis-ci.org/josegonzalez/cakephp-upload.png?branch=master)](https://travis-ci.org/josegonzalez/cakephp-upload) [![Coverage Status](https://coveralls.io/repos/josegonzalez/cakephp-upload/badge.png?branch=master)](https://coveralls.io/r/josegonzalez/cakephp-upload?branch=master) [![Total Downloads](https://poser.pugx.org/josegonzalez/cakephp-upload/d/total.png)](https://packagist.org/packages/josegonzalez/cakephp-upload) [![Latest Stable Version](https://poser.pugx.org/josegonzalez/cakephp-upload/v/stable.png)](https://packagist.org/packages/josegonzalez/cakephp-upload)
+[![Build Status](https://img.shields.io/travis/josegonzalez/cakephp-upload/master.svg?style=flat-square)](https://travis-ci.org/josegonzalez/cakephp-upload) 
+[![Coverage Status](https://img.shields.io/coveralls/josegonzalez/cakephp-upload.svg?style=flat-square)](https://coveralls.io/r/josegonzalez/cakephp-upload?branch=master) 
+[![Total Downloads](https://img.shields.io/packagist/dt/josegonzalez/cakephp-upload.svg?style=flat-square)](https://packagist.org/packages/josegonzalez/cakephp-upload) 
+[![Latest Stable Version](https://img.shields.io/packagist/v/josegonzalez/cakephp-upload.svg?style=flat-square)](https://packagist.org/packages/josegonzalez/cakephp-upload) 
+[![Documentation Status](https://readthedocs.org/projects/cakephp-upload/badge/?version=latest&style=flat-square)](https://readthedocs.org/projects/cakephp-upload/?badge=latest)
+[![Gratipay](https://img.shields.io/gratipay/josegonzalez.svg?style=flat-square)](https://gratipay.com/~josegonzalez/)
 
-# Upload Plugin 2.0
+# Upload Plugin 3.0
 
 The Upload Plugin is an attempt to sanely upload files using techniques garnered from packages such as [MeioUpload](http://github.com/jrbasso/MeioUpload) , [UploadPack](http://github.com/szajbus/cakephp-uploadpack) and [PHP documentation](http://php.net/manual/en/features.file-upload.php).
 
-## Background
+See [this branch](https://github.com/josegonzalez/cakephp-upload/tree/2.x) for CakePHP 2.x documentation.
 
-Media Plugin is too complicated, and it was a PITA to merge the latest updates into MeioUpload, so here I am, building yet another upload plugin. I'll build another in a month and call it "YAUP".
+See [this blog post](http://josediazgonzalez.com/2015/12/05/uploading-files-and-images/) for a tutorial on using the 3.x version.
 
 ## Requirements
 
-* CakePHP 2.x
-* Imagick/GD PHP Extension (for thumbnail creation)
-* PHP 5.3+
-* Patience
+* CakePHP 3.x
+* PHP 5.4+
 
 ## Documentation
-For documentation, please see [the docs](http://cakephp-upload.readthedocs.org/en/2.x/).
+For documentation, please see [the docs](http://cakephp-upload.readthedocs.org/en/latest/).
 
 ## License
 

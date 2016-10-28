@@ -15,11 +15,8 @@ Contents:
     Installation <installation>
     Examples <examples>
     Configuration options <configuration>
-    Associating many images to one item <polymorphic>
-    Generating thumbnails <thumbnails>
-    Validating uploads <validation>
-    File import behavior <file-import-behavior>
-    Thumbnail generation shell <thumbnail-shell>
+    Validation <validation>
+    Upload Behavior Interfaces <interfaces>
 
 
 Indices and tables

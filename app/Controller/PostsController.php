@@ -36,9 +36,17 @@ class PostsController extends AppController{
 	}
 
 	public function index(){
-		$this->set('posts',$this->Post->latestAllPosts()); 
+		$this->Prg->commonProcess();
+		$this->paginate = array(
+			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
+			'order'=>array('Post.modified'=>'desc')
+		);
+		$this->set('posts',$this->paginate());
 		$this->set('username',$this->Auth->user('username'));
 		$this->set('user_id',$this->Auth->user('id'));
+		$this->set('category',$this->Category->find('list',array(
+			'fields'=>array('Category.categoryname'),
+		)));
 		//$this->set('authorname',$this->Post->find('');
 		/*
 		$this->Prg->commonProcess();
@@ -62,19 +70,24 @@ class PostsController extends AppController{
 
 	public function add(){
 		if($this->request->is('post')){
-			debug($this->request->data);
-			exit();
 			$this->Post->create();
+			//$this->debugp();
 			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
-			
-			if($this->Post->save($this->request->data)
-			   /*&& $this->Post->saveAssociated($this->request->data)*/){
-				$this->Flash->success(__('Your post has been saved.'));
-				$this->redirect(array('action'=>'index'));
+
+
+			if($this->Post->saveAll($this->request->data)){
+				if(isset($this->request->data['Attachment'][0])){
+					$this->Flash->success(__('Your post has been saved.'));
+					$this->redirect(array('action'=>'index'));
+				}
 			}
 		}
-		$this->set('category',$this->Category->find('all'));
-		$this->set('tag',$this->Tag->find('all'));
+		$this->set('category',$this->Category->find('list',array(
+			'fields'=>array('Category.categoryname'),
+		)));
+		$this->set('tag',$this->Tag->find('list',array(
+			'fields'=>array('Tag.tagname'),
+		)));
 	}
 
 	public function edit($id = null){

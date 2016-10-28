@@ -1,6 +1,12 @@
 <?php
 class Post extends AppModel {
-	public $actsAs = array('Search.Searchable');
+	public $actsAs = array(
+		'Search.Searchable',
+	);
+
+	public $filterArgs = array(
+		'category_id'=>array('type'=>'value'),
+	);
 
 	public $validate = array(
 		'title'=>array(
@@ -12,7 +18,7 @@ class Post extends AppModel {
 	);
 
 	public $hasMany = array(
-		'Image'=>array(
+		'Attachment'=>array(
 			'className'=>'Attachment',
 			'foreignKey'=>'post_id',
 		)
