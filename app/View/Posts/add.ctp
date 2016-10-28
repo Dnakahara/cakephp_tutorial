@@ -16,7 +16,7 @@ echo $this->Form->input('Tag.id',array(
 	'options'=>$tag,
 	'multiple'=>'checkbox',
 ));
-echo $this->Form->input('Attachment.0.image',array(
+echo $this->Form->input('Attachment.0.photo',array(
 	'label'=>'Image',
 	'type'=>'file',
 ));
