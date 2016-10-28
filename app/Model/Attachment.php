@@ -2,6 +2,7 @@
 class Attachment extends AppModel{
 	public $actsAs = array(
 		'Upload.Upload'=>array(
+			//webroot/files/photoに保存する指定
 			'photo'=>array(
 				'fields'=>array(
 					'dir'=>'photo_dir',

@@ -16,6 +16,7 @@ echo $this->Form->input('Tag.id',array(
 	'options'=>$tag,
 	'multiple'=>'checkbox',
 ));
+//webroot/files/attachment(モデル名)/photo(保存先ディレクトリ名) の下に保存
 echo $this->Form->input('Attachment.0.photo',array(
 	'label'=>'Image',
 	'type'=>'file',

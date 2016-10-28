@@ -26,6 +26,15 @@ echo $this->Html->link('Log out',array(
 	'action'=>'logout'
 ));
 ?><?php endif; ?>
+<?php
+echo $this->Form->create('Post');
+?>
+<fieldset>
+<legend>検索</legend>
+</fieldset>
+<?php
+echo $this->Form->end('検索');
+?>
 <legend>検索</legend>
 <?php 
 echo $this->Form->input('category',array(
@@ -39,6 +48,7 @@ echo $this->Form->input('category',array(
 		<th>Title</th>
 		<th>Author</th>
 		<th>Created</th>
+		<th></th>
 	</tr>
 
 	<!-- ここから、$posts配列をループして、投稿記事の情報を表示 -->
@@ -51,13 +61,12 @@ echo $this->Form->input('category',array(
 				$post['Post']['title'],array(
 					'controller'=>'posts',
 					'action'=>'view',
-					$post['Post']['id']
-			)); 
+					$post['Post']['id'],
+				)
+			); 
 		    ?>
 		</td>
-		<td><?php
-			//Author name
-		?></td>
+		<td><?Php echo $post['User']['username']; ?></td>
 		<td><?php echo $post['Post']['created']; ?></td>
 		<td><?php
 			echo $this->Html->link(

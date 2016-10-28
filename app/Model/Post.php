@@ -6,6 +6,7 @@ class Post extends AppModel {
 
 	public $filterArgs = array(
 		'category_id'=>array('type'=>'value'),
+		'title'=>array('type'=>'like'),
 	);
 
 	public $validate = array(
@@ -28,7 +29,11 @@ class Post extends AppModel {
 		'Category'=>array(
 			'className'=>'Category',
 			'foreignKey'=>'category_id'
-		)
+		),
+		'User'=>array(
+			'className'=>'User',
+			'foreignKey'=>'user_id',
+		),
 	);
 	
 	public $hasAndBelongsToMany = array(

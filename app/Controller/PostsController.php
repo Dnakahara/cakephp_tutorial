@@ -36,6 +36,7 @@ class PostsController extends AppController{
 	}
 
 	public function index(){
+		$this->Post->recursive = 0;
 		$this->Prg->commonProcess();
 		$this->paginate = array(
 			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
@@ -47,13 +48,6 @@ class PostsController extends AppController{
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
 		)));
-		//$this->set('authorname',$this->Post->find('');
-		/*
-		$this->Prg->commonProcess();
-		$this->paginate = array(
-			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
-		);
-		 */
 	}
 
 	public function view($id = null){
@@ -71,7 +65,6 @@ class PostsController extends AppController{
 	public function add(){
 		if($this->request->is('post')){
 			$this->Post->create();
-			//$this->debugp();
 			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
 
 
