@@ -105,6 +105,7 @@ class PostsController extends AppController{
 		if(!$this->request->data){
 			$this->request->data = $post;
 		}
+		$this->set('post',$post);
 	}
 
 	public function delete($id){
