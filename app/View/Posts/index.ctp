@@ -31,24 +31,21 @@ echo $this->Form->create('Post');
 ?>
 <fieldset>
 <legend>検索</legend>
-</fieldset>
-<?php
-echo $this->Form->end('検索');
-?>
-<legend>検索</legend>
 <?php 
 echo $this->Form->input('category',array(
 	'options'=>$category,
 	'empty'=>'未選択',
 ));
 ?>
-<table>
+</fieldset><?php
+echo $this->Form->end();
+?><table>
 	<tr>
 		<th>Id</th>
 		<th>Title</th>
 		<th>Author</th>
 		<th>Created</th>
-		<th></th>
+		<th>Change</th>
 	</tr>
 
 	<!-- ここから、$posts配列をループして、投稿記事の情報を表示 -->
@@ -73,10 +70,9 @@ echo $this->Form->input('category',array(
 				'Edit',array(
 					'controller'=>'posts',
 					'action'=>'edit',
-					$post['Post']['id']
-			));
-		?></td>
-		<td><?php
+					$post['Post']['id'],
+				)
+			);
 			echo $this->Form->postLink(
 				'Delete',array(
 					'controller'=>'posts',
