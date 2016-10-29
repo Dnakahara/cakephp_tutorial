@@ -65,7 +65,7 @@ echo $this->Form->end();
 		</td>
 		<td><?Php echo $post['User']['username']; ?></td>
 		<td><?php echo $post['Post']['created']; ?></td>
-		<td><?php
+		<td><div><?php
 			echo $this->Html->link(
 				'Edit',array(
 					'controller'=>'posts',
@@ -73,6 +73,8 @@ echo $this->Form->end();
 					$post['Post']['id'],
 				)
 			);
+			?></div>
+			<div><?php
 			echo $this->Form->postLink(
 				'Delete',array(
 					'controller'=>'posts',
@@ -81,7 +83,8 @@ echo $this->Form->end();
 				),
 				array('confirm'=>'Are you sure?')
 			);
-		?></td>
+			?></div>
+		</td>
 	</tr>
 	<?php endforeach; ?>
 	<?php unset($posts); ?>
