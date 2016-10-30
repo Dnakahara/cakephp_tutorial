@@ -1,4 +1,4 @@
-<!-- File: /app/View/Posts/index.ctp -->
+<?php echo $this->element('header'); ?>
 <h1>Blog posts</h1>
 <?php echo $this->Flash->render('authorityError'); ?>
 <?php 
