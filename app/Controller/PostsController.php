@@ -104,6 +104,12 @@ class PostsController extends AppController{
 			$this->request->data = $post;
 		}
 		$this->set('post',$post);
+		$this->set('category',$this->Category->find('list',array(
+			'fields'=>array('Category.categoryname'),
+		)));
+		$this->set('tag',$this->Tag->find('list',array(
+			'fields'=>array('Tag.tagname'),
+		)));
 	}
 
 	public function delete($id){
