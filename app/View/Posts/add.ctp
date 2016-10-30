@@ -1,5 +1,4 @@
-<!-- File: /app/View/Posts/add.ctp -->
-
+<?php echo $this->element('header'); ?>
 <h1>Add Post</h1>
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));
