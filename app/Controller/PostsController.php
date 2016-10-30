@@ -44,7 +44,6 @@ class PostsController extends AppController{
 		);
 		$this->set('posts',$this->paginate());
 		$this->set('username',$this->Auth->user('username'));
-		$this->set('user_id',$this->Auth->user('id'));
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
 		)));
