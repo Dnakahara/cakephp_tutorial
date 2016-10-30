@@ -43,7 +43,6 @@ class PostsController extends AppController{
 			'order'=>array('Post.modified'=>'desc')
 		);
 		$this->set('posts',$this->paginate());
-		$this->set('username',$this->Auth->user('username'));
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
 		)));
