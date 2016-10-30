@@ -6,29 +6,7 @@ echo $this->Html->link('Add Post',array(
 	'controller'=>'posts',
 	'action'=>'add'
 ));
-?><p>最新順</p>
-<?php if(is_null($username)): 
-
-php echo '<p>LoginUser:GUEST</p>'; 
-echo $this->Html->link('Sign Up!',array(
-	'controller'=>'users',
-	'action'=>'add'
-));
-echo $this->Html->link('Login!',array(
-	'controller'=>'users',
-	'action'=>'login'
-))
-
-else:
-<p>LoginUser:<?php echo h($username); ?></p>
-<?php
-echo $this->Html->link('Log out',array(
-	'controller'=>'users',
-	'action'=>'logout'
-));
-
-endif;
-
+?><p>最新順</p><?php
 echo $this->Form->create('Post');
 ?>
 <fieldset>
