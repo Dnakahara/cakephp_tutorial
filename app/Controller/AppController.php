@@ -54,6 +54,10 @@ class AppController extends Controller {
 	public function beforeFilter(){
 		$this->Auth->allow(array('index','view'));
 	}
+	
+	public function beforeRender(){
+		$this->set('username',$this->Auth->user('username'));
+	}
 
 	public function isAuthorized($user = null){
 		//Admin can access every action
