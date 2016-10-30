@@ -1,5 +1,4 @@
-<!-- app/View/Users/login.ctp -->
-
+<?php echo $this->element('header'); ?>
 <div class="users form">
 <?php echo $this->Flash->render('auth'); ?>
 <?php echo $this->Form->create('User'); ?>
