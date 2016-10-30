@@ -1,2 +1,1 @@
-<!-- File: /app/View/Users/index.ctp -->
-
+<?php echo $this->element('header'); ?>
