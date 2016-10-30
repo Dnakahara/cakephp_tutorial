@@ -1,4 +1,4 @@
-<!-- File: /app/View/Posts/edit.ctp -->
+<?php echo $this->element('header'); ?>
 <h1>Edit Post</h1>
 <?php
 echo $this->Form->create('Post');
