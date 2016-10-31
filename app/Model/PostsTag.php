@@ -1,6 +1,6 @@
 <?php
 class PostsTag extends AppModel{
-	public $belongTo = array(
+	public $belongsTo = array(
 		'Post' =>array(
 			'className' => 'Post',
 			'foreignKey' => 'post_id',
