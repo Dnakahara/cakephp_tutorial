@@ -13,14 +13,6 @@ class UsersController extends AppController{
 		$this->set('users',$this->paginate());
 	}
 
-	public function view($id = null){
-		$this->User->id = $id;
-		if(!$this->User->exists()){
-			throw new NotFoundException(__('Invalid user'));
-		}
-		$this->set('user',$this->User->findById($id));
-	}
-
 	public function add(){
 		if($this->request->is('post')){
 			$this->User->create();
@@ -54,6 +46,7 @@ class UsersController extends AppController{
 		}else{
 			$this->request->data = $this->User->findById($id);
 			unset($this->request->data['User']['password']);
+			$this->set('user',$this->request->data);
 		}
 	}
 

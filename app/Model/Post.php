@@ -5,9 +5,46 @@ class Post extends AppModel {
 	);
 
 	public $filterArgs = array(
-		'category_id'=>array('type'=>'value'),
-		'title'=>array('type'=>'like'),
+		'category_id'=>array(
+			'type'=>'value',
+			'field'=>'Post.category_id',
+			'allowEmpty'=>true,
+		),
+		'title'=>array(
+			'type'=>'like',
+			'field'=>'Post.title',
+			'allowEmpty'=>true,
+		),
+		'tag'=>array(
+			'name'=>'tag',
+			'type'=>'subquery',
+			'method'=>'tagSearch',
+			'field'=>'Post.id',
+			'allowEmpty'=>true,
+		),
 	);
+	
+	public function tagSearch($data = array()){
+//		debug($data);exit();
+		$this->PostsTag->Behaviors->attach('Containable',array(
+			'autoFields'=>false
+		));
+
+		$this->PostsTag->Behaviors->attach('Search.Searchable');
+		
+		$query = $this->PostsTag->getQuery('all',array(
+			'conditions'=>array(
+				'PostsTag.tag_id'=>$data['tag'],
+			),
+			'fields'=>array(
+				'post_id',
+			),
+			'contain'=>array(
+				'Tag',
+			),
+		));
+		return $query;
+	}
 
 	public $validate = array(
 		'title'=>array(
@@ -43,11 +80,11 @@ class Post extends AppModel {
 			'foreignKey'=>'post_id',
 			'associationForeignKey'=>'tag_id',
 			'unique'=>true,
-			'with'=>'PostTag',
+			'with'=>'PostsTag',
 		),
 	);
 
-	public function isOwnedBy($post,$user){
+	protected function isOwnedBy($post,$user){
 		//postテーブルの中に idが$post, postのuser_idが$userの列が存在するならtrue 
 		$conditions = array(
 			'id'=>$post,
@@ -56,7 +93,7 @@ class Post extends AppModel {
 		return $this->field('id',$conditions) !== false;
 	}
 
-	public function latestAllPosts(){
+	protected function latestAllPosts(){
 		return $this->find('all',array(
 			'order'=>array(
 				'Post.created'=>'desc'

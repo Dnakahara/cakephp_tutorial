@@ -7,7 +7,7 @@ class Tag extends AppModel{
 			'foreignKey'=>'tag_id',
 			'associationForeignKey'=>'post_id',
 			'unique'=>true,
-			'with'=>'PostTag',
+			'with'=>'PostsTag',
 		),
 	);
 }

@@ -1,11 +1,48 @@
 <?php
 class PostsController extends AppController{
-	public $helpers = array('Html','Form','Flash');
-	public $components = array('Flash','Paginator','Search.Prg');
-	public $uses = array('Post','User','Attachment','Tag','Category');	
+	public $helpers = array('Flash');
+	public $components = array(
+		'Search.Prg'=>array(
+			'presetForm'=>array(
+				'paramType'=>'querystring',
+				'model'=>'Post'
+			),
+			'commonProcess'=>array(
+				'formName'=>null,
+				'keepPassed'=>true,
+				'action'=>null,
+				'modelMethod'=>'validateSearch',
+				'allowedParams'=>array(),
+				'paramType'=>'querystring',
+				'filterEmpty'=>false,
+			),
+		),
+	);
+	public $uses = array('Post','User','Attachment','Tag','PostsTag','Category');	
 	public $presetVars = true;
 
-	public function isAuthorized($user = null){
+	private function trimUploaded(){
+		//saveしようとしている記事中の未入力のファイルフォームからのデータは取り除く
+		for($i = 0; $i < count($this->request->data['Attachment']);$i++){
+			if(isset($this->request->data['Attachment'][$i]['photo']['name'])
+			   && $this->request->data['Attachment'][$i]['photo']['name']===''){
+				unset($this->request->data['Attachment'][$i]);
+			}
+		}
+
+		//取り除くだけでは連想配列の添え字がずれているので0から詰める
+		array_values($this->request->data['Attachment']);
+
+		//結局一つもファイルがアップロードされていなかったら、
+		//空のデータをattachments テーブルに保存しないために、
+		//一時的にPostとAttachmentのアソシエーションを切る
+		if(count($this->request->data['Attachment']) == 0){
+			$this->Post->unbindModel(array('hasMany'=>'Attachment'));
+			unset($this->request->data['Attachment']);
+		}
+	}
+
+	protected function isAuthorized($user = null){
 		//all author can add posts.
 		if(in_array($this->action,array('add','index','view'))){
 			return true;
@@ -36,8 +73,9 @@ class PostsController extends AppController{
 	}
 
 	public function index(){
-		$this->Post->recursive = 0;
+		$this->Post->recursive = 1;
 		$this->Prg->commonProcess();
+			debug($this->request->data);exit();
 		$this->paginate = array(
 			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
 			'order'=>array('Post.modified'=>'desc')
@@ -45,6 +83,9 @@ class PostsController extends AppController{
 		$this->set('posts',$this->paginate());
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
+		)));
+		$this->set('tag',$this->Tag->find('list',array(
+			'fields'=>array('Tag.tagname'),
 		)));
 	}
 
@@ -57,20 +98,23 @@ class PostsController extends AppController{
 		if(!$post){
 			throw new NotFoundException(__('Invalid post'));
 		}
+		unset($post['User']['password']);
 		$this->set('post',$post);
+		$imgSrcPrefix = '..'.DS.'..'.DS.'files'.DS.'attachment'.DS.'photo'.DS;
+		$this->set('imgSrcPrefix',$imgSrcPrefix);
 	}
 
 	public function add(){
 		if($this->request->is('post')){
 			$this->Post->create();
+			
 			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
 
+			$this->trimUploaded();
 
-			if($this->Post->saveAll($this->request->data)){
-				if(isset($this->request->data['Attachment'][0])){
-					$this->Flash->success(__('Your post has been saved.'));
-					$this->redirect(array('action'=>'index'));
-				}
+			if($this->Post->saveAll($this->request->data,array('deep'=>true))){
+				$this->Flash->success(__('Your post has been saved.'));
+				$this->redirect(array('action'=>'index'));
 			}
 		}
 		$this->set('category',$this->Category->find('list',array(
@@ -92,10 +136,20 @@ class PostsController extends AppController{
 		}
 
 		if($this->request->is(array('post','put'))){
-			$this->Post->id = $id;
-			if($this->Post->save($this->request->data)){
+			$this->Post->id = $this->request->data['Post']['id'];
+			$nowUploaded = $this->request->data['Attachment'];
+			$this->request->data['Attachment'] = $post['Attachment'];
+			if($nowUploaded !== null){
+				foreach($nowUploaded as $img){
+					$this->request->data['Attachment'] []= $img;
+				}
+			}
+
+			$this->trimUploaded();
+
+			if($this->Post->saveAll($this->request->data,array('deep'=>true))){
 				$this->Flash->success(__('Your post has been updated.'));
-				$this->redirect(array('action'=>'index'));
+				return $this->redirect(array('action'=>'index'));
 			}
 			$this->Flash->error(__('Unable to update your post.'));
 		}
@@ -103,13 +157,26 @@ class PostsController extends AppController{
 		if(!$this->request->data){
 			$this->request->data = $post;
 		}
+		unset($post['User']['password']);
 		$this->set('post',$post);
+
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
 		)));
+		$selectedCategory = $post['Category']['id'];
+		$this->set('selectedCategory',$selectedCategory);
+
 		$this->set('tag',$this->Tag->find('list',array(
 			'fields'=>array('Tag.tagname'),
 		)));
+		$selectedTag = array();
+		foreach($post['Tag'] as $tag){
+			$selectedTag []= $tag['id'];
+		}
+		$this->set('selectedTag',$selectedTag);
+
+		$imgSrcPrefix = '..'.DS.'..'.DS.'files'.DS.'attachment'.DS.'photo'.DS;
+		$this->set('imgSrcPrefix',$imgSrcPrefix);
 	}
 
 	public function delete($id){

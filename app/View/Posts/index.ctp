@@ -7,24 +7,32 @@ echo $this->Html->link('Add Post',array(
 	'action'=>'add'
 ));
 ?><p>最新順</p><?php
-echo $this->Form->create('Post');
+echo $this->Form->create('Post',array(
+	'novalidate'=>true,
+));
 ?>
 <fieldset>
-<legend>カテゴリー</legend>
+<legend>検索</legend>
 <?php 
-echo $this->Form->input('category',array(
+echo $this->Form->input('title');
+echo $this->Form->input('category_id',array(
+	'label'=>'Category',
 	'options'=>$category,
 	'empty'=>'未選択',
 ));
+echo $this->Form->input('Tag.Tag',array(
+	'label'=>'Tag',
+	'options'=>$tag,
+	'multiple'=>'checkbox',
+));
 ?>
-</fieldset><?php
-echo $this->Form->end('検索');
-?><table>
+</fieldset>
+<?php echo $this->Form->end('検索'); ?>
+<table>
 	<tr>
-		<th>Id</th>
+		<th>Created</th>
 		<th>Title</th>
 		<th>Author</th>
-		<th>Created</th>
 		<th>Change</th>
 	</tr>
 
@@ -32,7 +40,7 @@ echo $this->Form->end('検索');
 
 	<?php foreach($posts as $post): ?>
 	<tr>
-		<td><?php echo $post['Post']['id']; ?></td>
+		<td><?php echo $post['Post']['created']; ?></td>
 		<td><?php
 			echo $this->Html->link(
 				$post['Post']['title'],array(
@@ -44,7 +52,6 @@ echo $this->Form->end('検索');
 		    ?>
 		</td>
 		<td><?Php echo $post['User']['username']; ?></td>
-		<td><?php echo $post['Post']['created']; ?></td>
 		<td><div><?php
 			echo $this->Html->link(
 				'Edit',array(
