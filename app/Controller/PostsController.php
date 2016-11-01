@@ -60,6 +60,7 @@ class PostsController extends AppController{
 
 	public function beforeFilter(){
 		parent::beforeFilter();
+		//debug($this->Auth->user());exit();
 
 		if(!$this->isAuthorized($this->Auth->user())){
 			$this->Flash->set('<p>他の人の記事は編集・削除できません</p>',array(
@@ -73,9 +74,9 @@ class PostsController extends AppController{
 	}
 
 	public function index(){
+		//debug($this->request->data);exit();
 		$this->Post->recursive = 1;
 		$this->Prg->commonProcess();
-			debug($this->request->data);exit();
 		$this->paginate = array(
 			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
 			'order'=>array('Post.modified'=>'desc')

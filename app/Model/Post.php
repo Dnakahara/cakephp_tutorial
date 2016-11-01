@@ -15,17 +15,14 @@ class Post extends AppModel {
 			'field'=>'Post.title',
 			'allowEmpty'=>true,
 		),
-		'tag'=>array(
-			'name'=>'tag',
+		'tag_id'=>array(
 			'type'=>'subquery',
-			'method'=>'tagSearch',
 			'field'=>'Post.id',
-			'allowEmpty'=>true,
+			'method'=>'tagSearch',
 		),
 	);
 	
 	public function tagSearch($data = array()){
-//		debug($data);exit();
 		$this->PostsTag->Behaviors->attach('Containable',array(
 			'autoFields'=>false
 		));
@@ -34,7 +31,7 @@ class Post extends AppModel {
 		
 		$query = $this->PostsTag->getQuery('all',array(
 			'conditions'=>array(
-				'PostsTag.tag_id'=>$data['tag'],
+				'PostsTag.tag_id'=>$data['tag_id'],
 			),
 			'fields'=>array(
 				'post_id',
@@ -84,7 +81,7 @@ class Post extends AppModel {
 		),
 	);
 
-	protected function isOwnedBy($post,$user){
+	public function isOwnedBy($post,$user){
 		//postテーブルの中に idが$post, postのuser_idが$userの列が存在するならtrue 
 		$conditions = array(
 			'id'=>$post,
@@ -93,7 +90,7 @@ class Post extends AppModel {
 		return $this->field('id',$conditions) !== false;
 	}
 
-	protected function latestAllPosts(){
+	public function latestAllPosts(){
 		return $this->find('all',array(
 			'order'=>array(
 				'Post.created'=>'desc'

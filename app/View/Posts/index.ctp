@@ -20,7 +20,7 @@ echo $this->Form->input('category_id',array(
 	'options'=>$category,
 	'empty'=>'未選択',
 ));
-echo $this->Form->input('Tag.Tag',array(
+echo $this->Form->input('tag_id',array(
 	'label'=>'Tag',
 	'options'=>$tag,
 	'multiple'=>'checkbox',
