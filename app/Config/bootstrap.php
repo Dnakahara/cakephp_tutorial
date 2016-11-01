@@ -67,9 +67,7 @@ Cache::config('default', array('engine' => 'File'));
  CakePlugin::load('DebugKit'); // Loads a single plugin named DebugKit
  CakePlugin::load('Upload');
  CakePlugin::load('Search');
- 
- 
- 
+ CakePlugin::load('AclExtras');
 
 /**
  * To prefer app translation over plugin translation, you can set

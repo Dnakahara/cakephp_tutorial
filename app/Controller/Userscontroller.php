@@ -3,9 +3,36 @@
 App::uses('AppController','Controller');
 
 class UsersController extends AppController{
+	public $uses = array('User','Group');
+
 	public function beforeFilter(){
 		parent::beforeFilter();
-		$this->Auth->allow('add','logout');
+//		$this->Auth->allow('add','logout');
+	}
+	
+	public function permissionSetting(){
+		// この関数はaros_acos の設定に使う
+		// 使用時のみpublicにし、URLから呼び出して実行することができる。
+		// いろんな操作でidに対応するgroupnameがずれてくる可能性もあるので
+		// 実行前に必ず以下に書いてある情報が正しいかを確認すること！
+		// id : groupname
+		//  1 : Admin
+		//  2 : Author
+
+		$group = $this->User->Group;
+
+		//Admin グループには全てを許可する
+		$group->id = 1;
+		$this->Acl->allow($group,'controllers');
+
+		//Author グループにはGroupの追加・編集・削除を許可しない
+		$group->id = 2;
+		$this->Acl->deny($group,'controllers');
+		$this->Acl->allow($group,'controllers/Pages');
+		$this->Acl->allow($group,'controllers/Posts');
+		$this->Acl->allow($group,'controllers/Users');
+
+		exit;
 	}
 
 	public function index(){
@@ -19,16 +46,19 @@ class UsersController extends AppController{
 			if($this->User->saveAll($this->request->data)){
 				$this->Flash->success(__('The user has been saved'));
 				return $this->redirect(array(
-					'controller'=>'posts',
-					'action'=>'index'
+					'controller'=>'users',
+					'action'=>'index',
 				));
 			}
 			$this->Flash->error(
 				__('The user could not be saved. Please, try again.')
 			);
 		}
+		$this->set('groups',$this->Group->find('list',array(
+			'fields'=>array('Group.groupname'),
+		)));
 	}
-
+	
 	public function edit($id = null){
 		$this->User->id = $id;
 		if(!$this->User->exists()){
@@ -74,7 +104,7 @@ class UsersController extends AppController{
 			}
 		}
 	}
-
+	
 	public function logout(){
 		$this->redirect($this->Auth->logout());
 	}

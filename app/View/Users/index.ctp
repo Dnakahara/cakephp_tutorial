@@ -3,14 +3,14 @@
 <table>
 	<tr>
 		<th>UserName</th>
-		<th>Role</th>
+		<th>Group</th>
 		<th>Created</th>
 	</tr>
 	<?php foreach($users as $user): ?>
 	<tr>
-		<td><?php echo $user['username']?></td>
-		<td><?php echo $user['role']; ?></td>
-		<td><?php echo $user['created']; ?></td>
+		<td><?php echo $user['User']['username']?></td>
+		<td><?php echo $user['Group']['groupname']; ?></td>
+		<td><?php echo $user['User']['created']; ?></td>
 	</tr>
 	<?php endforeach; ?>
 	<?php unset($users); ?>

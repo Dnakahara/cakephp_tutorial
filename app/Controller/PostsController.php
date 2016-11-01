@@ -60,7 +60,6 @@ class PostsController extends AppController{
 
 	public function beforeFilter(){
 		parent::beforeFilter();
-		//debug($this->Auth->user());exit();
 
 		if(!$this->isAuthorized($this->Auth->user())){
 			$this->Flash->set('<p>他の人の記事は編集・削除できません</p>',array(
@@ -197,5 +196,3 @@ class PostsController extends AppController{
 		return $this->redirect(array('action'=>'index'));
 	}
 }
-
-

@@ -1,4 +1,6 @@
 <?php
+App::uses('AppModel','Model');
+
 class Attachment extends AppModel{
 	public $actsAs = array(
 		'Upload.Upload'=>array(

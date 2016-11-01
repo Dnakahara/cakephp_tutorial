@@ -20,6 +20,7 @@
  */
 
 App::uses('Controller', 'Controller');
+App::uses('AuthComponent','Controller/Component');
 
 /**
  * Application Controller
@@ -38,8 +39,13 @@ class AppController extends Controller {
 	);
 
 	public $components = array(
+		'Acl',
 		'Flash',
 		'Auth'=>array(
+			'loginAction'=>array(
+				'controller'=>'users',
+				'action'=>'login',
+			),
 			'loginRedirect'=>array(
 				'controller'=>'posts',
 				'action'=>'index'
@@ -49,11 +55,20 @@ class AppController extends Controller {
 				'action'=>'index',
 			),
 			'authenticate'=>array(
+				AuthComponent::ALL=>array(
+					'userModel'=>'User',
+				),
 				'Form'=>array(
 					'passwordHasher'=>'Blowfish'
-				)
+				),
 			),
-			''
+			'authorize'=>array(
+				AuthComponent::ALL=>array(
+					'actionPath'=>'controllers',
+					'userModel'=>'User',
+				),
+				'Actions',
+			),
 		),
 		'Session',
 	);
@@ -69,15 +84,11 @@ class AppController extends Controller {
 	}
 
 	public function beforeFilter(){
-		$this->Auth->allow(array('index','view'));
+//		$this->Auth->allow('display');
+	//	$this->Auth->allow();
 	}
 	
 	public function beforeRender(){
 		$this->set('username',$this->Auth->user('username'));
 	}
-
-	public function debugp(){
-		debug($this->request->data);
-		exit();
-	}	
 }
