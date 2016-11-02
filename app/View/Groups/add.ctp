@@ -3,10 +3,12 @@
 <?php echo $this->Form->create('Group'); ?>
 	<fieldset>
 		<legend><?php
-			echo __('登録するグループの名前を入力してください');
+			echo __('Please input New Group Name');
 		?></legend>
 		<?php
-		echo $this->Form->input('groupname');
+		echo $this->Form->input('groupname',array(
+			'label'=>__('GroupName'),
+		));
 		?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

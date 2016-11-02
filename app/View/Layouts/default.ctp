@@ -34,11 +34,37 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
+	<?php echo $this->Html->script('jquery-1.12.4.min.js'); ?>
+	 <?php echo $this->Html->script('bootstrap.min'); ?>
 </head>
 <body>
 	<div id="container">
 		<div id="header">
 			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
+			<nav>
+				<ul>
+					<li><?php echo $this->Html->link(__('Posts'),array(
+						'controller'=>'posts',
+						'action'=>'index',
+					)); ?></li>
+					<li><?php echo $this->Html->link(__('Users'),array(
+						'controller'=>'users',
+						'action'=>'index',
+					)); ?></li>
+					<li><?php echo $this->Html->link(__('Groups'),array(
+						'controller'=>'groups',
+						'action'=>'index',
+					)); ?></li>
+					<li><?php echo $this->Html->link(__('Categorys'),array(
+						'controller'=>'categories',
+						'action'=>'index',
+					)); ?></li>
+					<li><?php echo $this->Html->link(__('Tags'),array(
+						'controller'=>'tags',
+						'action'=>'index',
+					)); ?></li>
+				</ul>
+			</nav>
 		</div>
 		<div id="content">
 

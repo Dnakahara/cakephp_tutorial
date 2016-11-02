@@ -1,30 +1,28 @@
 <?php echo $this->element('header'); ?>
-<h1><?php echo __('Group List'); ?></h1>
+<h1><?php echo __('Category List'); ?></h1>
 <table>
 	<tr>
-		<th><?php echo __('GroupName'); ?></th>
-		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('CategoryName'); ?></th>
 		<th><?php echo __('Change'); ?></th>
 	</tr>
-	<?php foreach($groups as $group): ?>
+	<?php foreach($categories as $category): ?>
 	<tr>
-		<td><?php echo $group['Group']['groupname']; ?></td>
-		<td><?php echo $group['Group']['created']; ?></td>
+		<td><?php echo $category['Category']['categoryname']; ?></td>
 		<td><div><?php
 			echo $this->Html->link(
 				__('Edit'),array(
-					'controller'=>'groups',
+					'controller'=>'categories',
 					'action'=>'edit',
-					$group['Group']['id'],
+					$category['Category']['id'],
 				)
 			);
 			?></div>
 			<div><?php
 			echo $this->Form->postLink(
 				__('Delete'),array(
-					'controller'=>'groups',
+					'controller'=>'categories',
 					'action'=>'delete',
-					$group['Group']['id']
+					$category['Category']['id']
 				),
 				array('confirm'=>__('Are you sure?'))
 			);
@@ -32,5 +30,5 @@
 		</td>
 	</tr>
 	<?php endforeach; ?>
-	<?php unset($groups); ?>
+	<?php unset($categories); ?>
 </table>

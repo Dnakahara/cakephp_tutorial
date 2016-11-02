@@ -1,24 +1,24 @@
 <?php echo $this->element('header'); ?>
-<h1>Add Post</h1>
+<h1><?php echo __('Add Post'); ?></h1>
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));
-echo $this->Form->input('title');
-echo $this->Form->textarea('body');
+echo $this->Form->input('title',array('label'=>__('Title')));
+echo $this->Form->textarea('body',array('label'=>__('Body')));
 echo $this->Form->input('Category.id',array(
-	'label'=>'Category',
+	'label'=>__('Category'),
 	'options'=>$category,
-	'empty'=>'未選択',
+	'empty'=>__('Not Selected'),
 ));
 //HABTM でPostとTagを結びつけるために、Formの入力先はTag.Tag
 echo $this->Form->input('Tag.Tag',array(
-	'label'=>'Tag',
+	'label'=>__('Tag'),
 	'options'=>$tag,
 	'multiple'=>'checkbox',
 ));
 //webroot/files/attachment(モデル名)/photo(保存先ディレクトリ名) の下に保存
 echo $this->Form->input('Attachment.0.photo',array(
-	'label'=>'Image',
+	'label'=>__('Image'),
 	'type'=>'file',
 ));
-echo $this->Form->end('Save Post');
+echo $this->Form->end(__('Save Post'));
 ?>

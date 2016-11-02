@@ -5,11 +5,33 @@ App::uses('AppController','Controller');
 class UsersController extends AppController{
 	public $uses = array('User','Group');
 
+	protected function isAuthorizedCheck($user = null){
+		//all user can edit and delete his own UserInfomation
+		if(in_array($this->action,array('edit','delete'))){
+			$userId = (int)$this->request->params['pass'][0];
+			if((int)$user['id'] === $userId)return;			
+		}
+
+		//Admin user can edit and delete all users.
+		if(parent::isAuthorizedCheck($user))return;
+		else{
+			$this->Flash->set(__('You cannot edit and delete others infomation'),array(
+				'key'=>'authorityError'
+			));
+			return $this->redirect(array(
+				'controller'=>'users',
+				'action'=>'index',
+			));
+		}
+	}
+
 	public function beforeFilter(){
 		parent::beforeFilter();
-//		$this->Auth->allow('add','logout');
+		$this->Auth->allow('index','add','logout');
+		// permissionSetting時には上の制限をコメントアウトして下のコメントアウトを外す
+		//$this->Auth->allow();
 	}
-	
+
 	public function permissionSetting(){
 		// この関数はaros_acos の設定に使う
 		// 使用時のみpublicにし、URLから呼び出して実行することができる。
@@ -25,12 +47,15 @@ class UsersController extends AppController{
 		$group->id = 1;
 		$this->Acl->allow($group,'controllers');
 
-		//Author グループにはGroupの追加・編集・削除を許可しない
+		//Author グループにはGroup・Category・Tagの追加・編集・削除を許可しない
 		$group->id = 2;
 		$this->Acl->deny($group,'controllers');
 		$this->Acl->allow($group,'controllers/Pages');
 		$this->Acl->allow($group,'controllers/Posts');
 		$this->Acl->allow($group,'controllers/Users');
+		$this->Acl->allow($group,'controllers/Groups/index');
+		$this->Acl->allow($group,'controllers/Categories/index');
+		$this->Acl->allow($group,'controllers/Tags/index');
 
 		exit;
 	}
@@ -60,6 +85,10 @@ class UsersController extends AppController{
 	}
 	
 	public function edit($id = null){
+		$this->isAuthorizedCheck($this->Auth->user());
+		if(!$id){
+			throw new NotFoundException(__('Invalid user'));
+		}
 		$this->User->id = $id;
 		if(!$this->User->exists()){
 			throw new NotFoundEXception(__('Invalid user'));
@@ -81,8 +110,10 @@ class UsersController extends AppController{
 	}
 
 	public function delete($id = null){
-
-		$this->request->allowMethod('post');
+		$this->isAuthorizedCheck($this->Auth->user());
+		if($this->request->is('get')){
+			throw new MethodNotAllowedException();
+		}
 
 		$this->User->id = $id;
 		if(!$this->User->exists()){
@@ -92,6 +123,10 @@ class UsersController extends AppController{
 		if($this->User->delete()){
 			$this->Flash->success(__('User deleted'));
 			return $this->redirect(array('action'=>'index'));
+		}else {
+			$this->Flash->error(
+				__('The user with id: %s could not be deleted.',h($id))
+			);
 		}
 	}
 

@@ -73,9 +73,9 @@ class AppController extends Controller {
 		'Session',
 	);
 
-	protected function isAuthorized($user = null){
+	protected function isAuthorizedCheck($user = null){
 		//Admin can access every action
-		if(isset($user['role']) && $user['role']==='admin'){
+		if(isset($user['group_id']) && $user['group_id']==='1'){
 			return true;
 		}
 
@@ -84,8 +84,7 @@ class AppController extends Controller {
 	}
 
 	public function beforeFilter(){
-//		$this->Auth->allow('display');
-	//	$this->Auth->allow();
+		$this->Auth->allow('display');
 	}
 	
 	public function beforeRender(){

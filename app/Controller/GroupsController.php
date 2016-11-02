@@ -2,12 +2,6 @@
 App::uses('AppController','Controller');
 
 class GroupsController extends AppController{
-
-	public function beforeFilter(){
-		parent::beforeFilter();
-	}
-
-
 	public function index(){
 		$this->Group->recursive=0;
 		$this->set('groups',$this->paginate());
@@ -32,7 +26,7 @@ class GroupsController extends AppController{
 	public function edit($id = null){
 		$this->Group->id = $id;
 		if(!$this->Group->exists()){
-			throw new NotFoundEXception(__('Invalid user'));
+			throw new NotFoundException(__('Invalid user'));
 		}
 
 		if($this->request->is('post') || $this->request->is('put')){

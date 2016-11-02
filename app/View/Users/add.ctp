@@ -3,13 +3,27 @@
 <?php echo $this->Form->create('User'); ?>
 	<fieldset>
 		<legend><?php 
-			echo __('登録するユーザーの情報を入力してください');
+			echo __('Please input New User Infomation');
 		?></legend>
-		<small><span>*</span>がついている項目は必須です</small>
 			<?php
-			echo $this->Form->input('username');
-			echo $this->Form->input('password');
+			echo $this->Form->input('username',array(
+				'label'=>__('UserName'),
+			));
+			echo $this->Form->input('password',array(
+				'label'=>__('Password'),
+				'value'=>'',
+			));
+			echo $this->Form->input('confirm',array(
+				'type'=>'password',
+				'label'=>__('Password Again'),
+				'required'=>true,
+				'value'=>'',
+				'div'=>array(
+					'class'=>'input password required',
+				),
+			));
 			echo $this->Form->input('group_id',array(
+				'label'=>__('select groups'),
 				'options'=>$groups,
 			));
 			?>

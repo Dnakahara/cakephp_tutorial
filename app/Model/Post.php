@@ -8,7 +8,7 @@ class Post extends AppModel {
 
 	public $filterArgs = array(
 		'category_id'=>array(
-			'type'=>'value',
+			'type'=>'like',
 			'field'=>'Post.category_id',
 			'allowEmpty'=>true,
 		),
@@ -47,11 +47,23 @@ class Post extends AppModel {
 
 	public $validate = array(
 		'title'=>array(
-			'rule'=>'notBlank'
+			'notBlank'=>array(
+				'rule'=>'notBlank',
+				'message'=>'Title is required',
+			),
 		),
 		'body'=>array(
-			'rule'=>'notBlank'
-		)
+			'notBlank'=>array(
+				'rule'=>'notBlank',
+				'message'=>'Body is required',
+			),
+		),
+		'category_id'=>array(
+			'notBlank'=>array(
+				'rule'=>'notBlank',
+				'message'=>'Category is required',
+			),
+		),
 	);
 
 	public $hasMany = array(

@@ -1,4 +1,6 @@
 <?php
+App::uses('AppController','Controller');
+
 class PostsController extends AppController{
 	public $helpers = array('Flash');
 	public $components = array(
@@ -42,38 +44,33 @@ class PostsController extends AppController{
 		}
 	}
 
-	protected function isAuthorized($user = null){
-		//all author can add posts.
-		if(in_array($this->action,array('add','index','view'))){
-			return true;
-		}
+	public function isAuthorizedCheck($user = null){
 
-		//all author can edit and delete his own posts.
+		//all user can edit and delete his own posts.
 		if(in_array($this->action,array('edit','delete'))){
 			$postId = (int)$this->request->params['pass'][0];
-			if($this->Post->isOwnedBy($postId,$user['id'])){
-				return true;
-			}
+			if($this->Post->isOwnedBy($postId,$user['id']))return;
 		}
-		return parent::isAuthorized($user);
+
+		//Admin user can edit and delete all posts.
+		if(parent::isAuthorizedCheck($user))return;
+		else{
+			$this->Flash->set(__('You cannot edit and delete others posts'),array(
+				'key'=>'authorityError'
+			));
+			return $this->redirect(array(
+				'controller'=>'posts',
+				'action'=>'index',
+			));
+		}
 	}
 
 	public function beforeFilter(){
 		parent::beforeFilter();
-
-		if(!$this->isAuthorized($this->Auth->user())){
-			$this->Flash->set('<p>他の人の記事は編集・削除できません</p>',array(
-				'key'=>'authorityError'
-			));
-			$this->redirect(array(
-				'controller'=>'posts',
-				'action'=>'index',
-			));
-		}	
+		$this->Auth->allow(array('index','view'));
 	}
 
 	public function index(){
-		//debug($this->request->data);exit();
 		$this->Post->recursive = 1;
 		$this->Prg->commonProcess();
 		$this->paginate = array(
@@ -126,6 +123,8 @@ class PostsController extends AppController{
 	}
 
 	public function edit($id = null){
+		$this->isAuthorizedCheck($this->Auth->user());
+
 		if(!$id){
 			throw new NotFoundException(__('Invalid post'));
 		}
@@ -180,6 +179,7 @@ class PostsController extends AppController{
 	}
 
 	public function delete($id){
+		$this->isAuthorizedCheck($this->Auth->user());
 		if($this->request->is('get')){
 			throw new MethodNotAllowedException();
 		}

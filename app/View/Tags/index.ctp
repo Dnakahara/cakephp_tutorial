@@ -1,30 +1,28 @@
 <?php echo $this->element('header'); ?>
-<h1><?php echo __('Group List'); ?></h1>
+<h1><?php echo __('Tag List'); ?></h1>
 <table>
 	<tr>
-		<th><?php echo __('GroupName'); ?></th>
-		<th><?php echo __('Created'); ?></th>
+		<th><?php echo __('TagName'); ?></th>
 		<th><?php echo __('Change'); ?></th>
 	</tr>
-	<?php foreach($groups as $group): ?>
+	<?php foreach($tags as $tag): ?>
 	<tr>
-		<td><?php echo $group['Group']['groupname']; ?></td>
-		<td><?php echo $group['Group']['created']; ?></td>
+		<td><?php echo $tag['Tag']['tagname']; ?></td>
 		<td><div><?php
 			echo $this->Html->link(
 				__('Edit'),array(
-					'controller'=>'groups',
+					'controller'=>'tags',
 					'action'=>'edit',
-					$group['Group']['id'],
+					$tag['Tag']['id'],
 				)
 			);
 			?></div>
 			<div><?php
 			echo $this->Form->postLink(
 				__('Delete'),array(
-					'controller'=>'groups',
+					'controller'=>'tags',
 					'action'=>'delete',
-					$group['Group']['id']
+					$tag['Tag']['id']
 				),
 				array('confirm'=>__('Are you sure?'))
 			);
@@ -32,5 +30,5 @@
 		</td>
 	</tr>
 	<?php endforeach; ?>
-	<?php unset($groups); ?>
+	<?php unset($tags); ?>
 </table>
