@@ -1,7 +1,7 @@
 <?php echo $this->element('header'); ?>
 <h1>User List</h1>
 <?php echo $this->Flash->render('authorityError'); ?>
-<table>
+<table class="table">
 	<tr>
 		<th><?php echo __('UserName') ?></th>
 		<th><?php echo __('Group'); ?></th>
@@ -21,8 +21,6 @@
 					$user['User']['id'],
 				)
 			);
-			?></div>
-			<div><?php
 			echo $this->Form->postLink(
 				__('Delete'),array(
 					'controller'=>'users',

@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 <h1><?php echo __('Category List'); ?></h1>
-<table>
+<table class="table">
 	<tr>
 		<th><?php echo __('CategoryName'); ?></th>
 		<th><?php echo __('Change'); ?></th>
@@ -16,8 +16,6 @@
 					$category['Category']['id'],
 				)
 			);
-			?></div>
-			<div><?php
 			echo $this->Form->postLink(
 				__('Delete'),array(
 					'controller'=>'categories',

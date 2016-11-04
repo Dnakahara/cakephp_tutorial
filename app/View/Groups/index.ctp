@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 <h1><?php echo __('Group List'); ?></h1>
-<table>
+<table class="table">
 	<tr>
 		<th><?php echo __('GroupName'); ?></th>
 		<th><?php echo __('Created'); ?></th>
@@ -18,8 +18,6 @@
 					$group['Group']['id'],
 				)
 			);
-			?></div>
-			<div><?php
 			echo $this->Form->postLink(
 				__('Delete'),array(
 					'controller'=>'groups',

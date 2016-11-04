@@ -21,69 +21,98 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <html>
 <head>
 	<?php echo $this->Html->charset(); ?>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>
-		<?php echo $cakeDescription ?>:
+		<?php //echo $cakeDescription ?>
 		<?php echo $this->fetch('title'); ?>
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
 
-		echo $this->Html->css('cake.generic');
+//		echo $this->Html->css('cake.generic');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
 	<?php echo $this->Html->script('jquery-1.12.4.min.js'); ?>
-	 <?php echo $this->Html->script('bootstrap.min'); ?>
+	<?php echo $this->Html->script('bootstrap.min.js'); ?>
+	<?php echo $this->Html->css('bootstrap.min'); ?>
 </head>
-<body>
-	<div id="container">
-		<div id="header">
-			<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
-			<nav>
-				<ul>
-					<li><?php echo $this->Html->link(__('Posts'),array(
-						'controller'=>'posts',
-						'action'=>'index',
-					)); ?></li>
-					<li><?php echo $this->Html->link(__('Users'),array(
-						'controller'=>'users',
-						'action'=>'index',
-					)); ?></li>
-					<li><?php echo $this->Html->link(__('Groups'),array(
-						'controller'=>'groups',
-						'action'=>'index',
-					)); ?></li>
-					<li><?php echo $this->Html->link(__('Categorys'),array(
-						'controller'=>'categories',
-						'action'=>'index',
-					)); ?></li>
-					<li><?php echo $this->Html->link(__('Tags'),array(
-						'controller'=>'tags',
-						'action'=>'index',
-					)); ?></li>
-				</ul>
-			</nav>
-		</div>
-		<div id="content">
-
-			<?php echo $this->Flash->render(); ?>
-			<?php echo $this->Flash->render('auth'); ?>
-			<?php echo $this->fetch('content'); ?>
-		</div>
-		<div id="footer">
-			<?php echo $this->Html->link(
-					$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-					'http://www.cakephp.org/',
-					array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-				);
-			?>
-			<p>
-				<?php echo $cakeVersion; ?>
-			</p>
+<body style="padding-top: 70px;">
+	<div class="col-md-2">
+		<div class="sidevar-nav affix">
+		<?php if(is_null($username)): 
+		echo '<p>LoginUser: GUEST</p>';
+		echo $this->Html->link('Sign Up!',array(
+			'controller'=>'users',
+			'action'=>'add',
+			'class'=>'btn',
+		));
+		echo $this->Html->link('Login!',array(
+			'controller'=>'users',
+			'action'=>'login',
+			'class'=>'btn',
+		));
+		 else:?>
+		<p>LoginUser: <?php echo h($username); ?></p>
+		<?php
+		echo $this->Html->link('Log out',array(
+			'controller'=>'users',
+			'action'=>'logout'
+		));
+		endif; ?>
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+	<div class="col-md-10">
+<!--		<div class="container"> -->
+			<div id="header">
+				<!-- <h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1> -->
+				<nav class="navbar nav-tabs navbar-default navbar-fixed-top">
+					<ul class="nav navbar-nav">
+						<li><?php echo $this->Html->link(__('Posts'),array(
+							'controller'=>'posts',
+							'action'=>'index',
+						)); ?></li>
+						<li><?php echo $this->Html->link(__('Users'),array(
+							'controller'=>'users',
+							'action'=>'index',
+						)); ?></li>
+						<li><?php echo $this->Html->link(__('Groups'),array(
+							'controller'=>'groups',
+							'action'=>'index',
+						)); ?></li>
+						<li><?php echo $this->Html->link(__('Categorys'),array(
+							'controller'=>'categories',
+							'action'=>'index',
+						)); ?></li>
+						<li><?php echo $this->Html->link(__('Tags'),array(
+							'controller'=>'tags',
+							'action'=>'index',
+						)); ?></li>
+						</ul>
+				</nav>
+			</div>
+			<div id="content">
+
+				<?php echo $this->Flash->render(); ?>
+				<?php echo $this->Flash->render('auth'); ?>
+				<?php echo $this->fetch('content'); ?>
+			</div>
+			<div id="footer">
+	<?php echo $this->Html->link(
+		$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
+		'http://www.cakephp.org/',
+		array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
+	);
+	?>
+				<p>
+					<?php echo $cakeVersion; ?>
+				</p>
+			</div>
+		<?php echo $this->element('sql_dump'); ?>
+<!--		</div> -->
+	</div>
 </body>
 </html>
