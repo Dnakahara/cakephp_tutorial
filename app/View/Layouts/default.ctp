@@ -36,9 +36,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
+	<?php echo $this->Html->css('bootstrap.min'); ?>
 	<?php echo $this->Html->script('jquery-1.12.4.min.js'); ?>
 	<?php echo $this->Html->script('bootstrap.min.js'); ?>
-	<?php echo $this->Html->css('bootstrap.min'); ?>
 </head>
 <body style="padding-top: 70px;">
 	<div class="col-md-2">
