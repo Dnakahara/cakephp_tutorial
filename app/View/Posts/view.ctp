@@ -18,6 +18,7 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 	echo '<div class="col-md-2">';
 	echo $this->Html->image($imgSrcPrefix.$post['Attachment'][$i]['photo_dir'].DS.$post['Attachment'][$i]['photo'],array(
 		'class'=>'img-responsive thumbnail',
+		'id'=>'thumbnail'.$i,
 		'width'=>'256',
 	));
 	echo '</div>';
@@ -28,20 +29,12 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 
 <div id="modal-overlay">
 	<div id="modal-content">
-	<?php
-	for($i = 0; $i < count($post['Attachment']); $i++){
-		echo $this->Html->image($imgSrcPrefix.$post['Attachment'][$i]['photo_dir'].DS.$post['Attachment'][$i]['photo'],array(
-			'class'=>'img-responsive modalImg',
-			'id'=>'modalImg'.$i,
-		));
-	}
-	?>
 		<img src="/images/close.png" alt="close modal" class="modalclose" />
 	</div>
 </div>
 
 <script>
-	$(function(){
+	(function(){
 		//センタリングをする関数
 		function centeringModalSyncer(){
 
@@ -52,10 +45,16 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 			var h = $(window).height();
 
 			//コンテンツ(#modal-content)の幅を取得し、変数[cw]に格納
-			var cw = $("#modal-content").outerWidth({margin:true});
+			var cw = $('#modal-content').outerWidth(true);
 
 			//コンテンツ(#modal-content)の高さを取得し、変数[ch]に格納
-			var ch = $("#modal-content").outerHeight({margin:true});
+			var ch = $('#modal-content').outerHeight(true);
+
+			console.log(w);
+			console.log(h);
+			console.log(cw);
+			console.log(ch);
+
 
 			//コンテンツ(#modal-content)を真ん中に配置するのに、左端から何ピクセル離せばいいか？を計算して、変数[pxleft]に格納
 			var pxleft = ((w - cw)/2);
@@ -64,21 +63,32 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 			var pxtop = ((h - ch)/2);
 
 			//[#modal-content]のCSSに[left]の値(pxleft)を設定
-			$("#modal-content").css({"left": pxleft + "px"});
+			$('#modal-content').css({"left": pxleft + "px"});
 
 			//[#modal-content]のCSSに[top]の値(pxtop)を設定
-			$("#modal-content").css({"top": pxtop + "px"});
+			$('#modal-content').css({"top": pxtop + "px"});
 		}
 		
-		$('.thumbnail').click(function(){
-			$(this).blur();
-			if($('#modal-overlay').css('display')!=='none')return false;
-			centeringModalSyncer()
-			$('#modal-overlay').fadeIn(800);
+		var imgArray = <?php echo json_encode($post['Attachment'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+
+		$(function(){
+			console.log(imgArray);
+			$('.thumbnail').click(function(){
+				$(this).blur();
+				if($('#modal-overlay').css('display')!=='none')return false;
+				var imgIdx = parseInt(($(this).attr('id')).substring(9),10);
+				var img = $('<img src="/files/attachment/photo/'+ imgArray[imgIdx]['photo_dir'] + '/' + imgArray[imgIdx]['photo'] + '"  class="img-responsive modalImg" id="modalImg' + imgIdx + '" />');
+				$('#modal-content').prepend(img);
+				img.ready(function(){
+					centeringModalSyncer(),
+					$('#modal-overlay').fadeIn(800)
+				});
+			});
+			
+			$('#modal-overlay,#modal-close').click(function(){
+				$('#modal-content img')[0].remove();
+				$('#modal-overlay').fadeOut(800);
+			});
 		});
-		
-		$('#modal-overlay,#modal-close').click(function(){
-			$('#modal-overlay').fadeOut(800);
-		});
-	});
+	})();
 </script>
