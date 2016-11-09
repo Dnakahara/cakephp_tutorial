@@ -27,11 +27,12 @@ class UsersController extends AppController{
 
 	public function beforeFilter(){
 		parent::beforeFilter();
-		$this->Auth->allow('index','add','logout');
+		$this->Auth->allow('index','add','logout','login');
 		// permissionSetting時には上の制限をコメントアウトして下のコメントアウトを外す
 		//$this->Auth->allow();
 	}
 
+	/*
 	public function permissionSetting(){
 		// この関数はaros_acos の設定に使う
 		// 使用時のみpublicにし、URLから呼び出して実行することができる。
@@ -59,6 +60,7 @@ class UsersController extends AppController{
 
 		exit;
 	}
+	 */
 
 	public function index(){
 		$this->User->recursive=0;
