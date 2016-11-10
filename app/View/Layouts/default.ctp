@@ -40,45 +40,60 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php echo $this->Html->script('jquery-1.12.4.min.js'); ?>
 	<?php echo $this->Html->script('bootstrap.min.js'); ?>
 </head>
-<body style="padding-top: 70px;">
+<body style="padding-top: 70px;letter-spacing:0.1em;">
 	<div class="col-md-2">
-		<div class="sidevar-nav affix">
+		<div class="sidevar-nav affix" style="background-color: #bbb;padding: auto 0px;">
 			<?php if(is_null($username)): 
 			echo '<p>LoginUser: GUEST</p>';
-			echo $this->Html->link('Sign Up!',array(
-				'controller'=>'users',
-				'action'=>'add',
-				'class'=>'btn',
-			));
-			echo $this->Html->link('Login!',array(
-				'controller'=>'users',
-				'action'=>'login',
-				'class'=>'btn',
-			));
+			echo $this->Html->link(
+				__('Sign Up!'),array(
+					'controller'=>'users',
+					'action'=>'add',
+				),
+				array(
+					'class'=>'col-md-6 btn btn-success',
+				)
+			);
+			echo $this->Html->link(
+				__('Log In!'),array(
+					'controller'=>'users',
+					'action'=>'login',
+				),
+				array(
+					'class'=>'col-md-6 btn btn-info',
+				)
+			);
 			 else:?>
 			<p>LoginUser: <?php echo h($username); ?></p>
 			<?php
-			echo $this->Html->link('Log out',array(
-				'controller'=>'users',
-				'action'=>'logout'
-			));
+			echo $this->Html->link(
+				__('Log out'),array(
+					'controller'=>'users',
+					'action'=>'logout',
+				),
+				array(
+					'class'=>'col-md-6 btn btn-default btn-block',
+					'style'=>'background-color:#0f5faf;color:#ffffff;',
+				)
+			);
 			endif;
 			?>
+			<br/>
 
 			<form id="zipcode-form" action="/zipcodes/search" method="POST">
 				<div class="input text form-group">
 					<label for="ZipcodeZipcode" class="control-label"><?php echo __('Zipcode');?></label>
 					<input name="data[Zipcode][zipcode]" maxlength="7" type="text" id="ZipcodeZipcode" class="form-control" />
 				</div>
-				<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><?php echo __('Seaerch');?></button>
+				<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><?php echo __('Search');?></button>
 			</form>
 			<div class="input text form-group" id="address">
 				<label for="address" class="control-label"><?php echo __('Address');?></label>
 				<input name="data[address]" type="text" id="address-input" class="form-control" />
 			</div>
 			<div id="address-select" class="input select form-group" style="display: none;">
-				<label for="address"><?php echo __('Address'); ?></label>
-				<select name="data[address]" id="address-select-options" onchange="addressSelected()">
+				<label for="address"><?php echo __('Address'); ?></label><br />
+				<select name="data[address]" id="address-select-options" class="form-controll" style="font-size: 16px;border: 2px;">
 					<option value="" selected="selected">Not Selected</option>
 				</select>
 			</div>
@@ -135,13 +150,15 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	</div>
 	<script>
 		function addressSelected(){
-			$('#address-input').val($('#address-select').val()); 
+			$('#address-input').val($("#address-select option:selected").text()); 
 			$('#address-select').css('display','none');
 			$('#address').css('display','block');
-			$('#address-select-options').html("");
+			$('#address-select-options').html('<option value="" selected="selected">Not Selected</option>');
 		}
 
 		$(function(){
+			$('#address-select').change(addressSelected);
+
 			$('#zipcode-form').submit(function(event) {
 				// HTMLでの送信をキャンセル
 				event.preventDefault();
@@ -177,8 +194,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							if(result[0]['Zipcode']['street'] === "以下に掲載がない場合"){
 								result[0]['Zipcode']['street'] = "";
 							}
-							$('#address').val(result[0]['Zipcode']['pref']+result[0]['Zipcode']['city']+result[0]['Zipcode']['street']);
-							console.log(result);
+							$('#address-input').val(result[0]['Zipcode']['pref']+result[0]['Zipcode']['city']+result[0]['Zipcode']['street']);
 						}else if(result.length >= 2){
 							var options = '<option value="" selected="selected">Not Selected</option>';
 							for(var i = 0; i < result.length; ++i){
@@ -189,10 +205,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 								options += '<option value="' + val + '">' + val + '</option>';
 							}
 							$('#address').css('display','none');
-							console.log(options);
 							$('#address-select-options').html(options);
 							$('#address-select').css('display','block');
 						}else{
+							$('#address-input').val('該当する住所はありません');
 							console.log('empty');
 						}
 					},

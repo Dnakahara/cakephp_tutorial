@@ -5,11 +5,11 @@
 <h1><?php echo h($post['Post']['title']); ?></h1>
 <p><small><?php echo __('Created: '); echo $post['Post']['created']; ?></small></p>
 <p><?php echo __('Category: '); echo h($post['Category']['categoryname']); ?></p>
-<p><?php echo __('Tag: '); ?></p> 
+<p style="margin-bottom: 20px;"><?php echo __('Tag: '); ?>
 <?php foreach($post['Tag'] as $tag):
 echo h($tag['tagname']);
 endforeach;
-?>
+?></p> 
 <p><?php echo h($post['Post']['body']); ?></p>
 
 <?php 
@@ -24,7 +24,6 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 	echo '</div>';
 	if($i % 6 == 5 || $i+1 >= count($post['Attachment'])){echo '</div>';}
 }
-	# 下記が表示部分
 ?>
 
 <div id="modal-overlay">
@@ -73,9 +72,6 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 				//[#modal-content]のCSSに[top]の値(pxtop)を設定
 				$('#modal-content').css({"top": pxtop + "px"});
 			});
-
-
-
 		}
 		
 		let imgArray = <?php echo json_encode($post['Attachment'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;

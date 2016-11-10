@@ -138,6 +138,7 @@ class PostsController extends AppController{
 			if($id!==$this->request->data['Post']['id']){
 				$this->Flash->error(__('Unable to update your post.'));
 			}
+			debug($this->request->data);exit;
 			
 			$this->Post->id = $this->request->data['Post']['id'];
 			$nowUploaded = $this->request->data['Attachment'];
