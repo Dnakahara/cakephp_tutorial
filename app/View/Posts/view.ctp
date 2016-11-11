@@ -54,11 +54,6 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 			img.bind("load",function(){
 				let ch = $(this).height();
 				let cw = $(this).width();
-				console.log(w);
-				console.log(h);
-				console.log(cw);
-				console.log(ch);
-
 
 				//コンテンツ(#modal-content)を真ん中に配置するのに、左端から何ピクセル離せばいいか？を計算して、変数[pxleft]に格納
 				let pxleft = ((w - cw)/2);

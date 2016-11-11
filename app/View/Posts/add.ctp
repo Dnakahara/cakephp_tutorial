@@ -31,15 +31,26 @@ echo $this->Form->textarea('body',array(
 	'div'=>array(
 		'class'=>'form-group',
 	),
+	'style'=>'margin-bottom: 20px;',
 ));
 //webroot/files/attachment(モデル名)/photo(保存先ディレクトリ名) の下に保存
 echo $this->Form->input('Attachment.0.photo',array(
-	'label'=>__('Image'),
+	'id'=>'file-input',
+	'label'=>__('Please select image you want to upload'),
 	'type'=>'file',
 	'div'=>array(
 		'class'=>'form-group',
 	),
+	'style'=>'display:none;',
 ));
+?>
+<div class="input-prepend" onclick="$('#file-input').click()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
+	<a class="btn btn-inline"style="background-color: #00eeff">
+		<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+	</a>
+	<span id="cover" class="input-xlg uneditable-input" onclick="$('#file-input').click()">select file</span>
+</div>
+<?php
 echo $this->Form->button(
 	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Save Post'),array(
 	'type'=>'submit',
@@ -51,3 +62,12 @@ echo $this->Form->button(
 ));
 echo $this->Form->end();
 ?>
+
+
+<script>
+	$(function(){
+		$('#file-input').change(function() {
+			$('#cover').html($(this).val().replace("C:\\fakepath\\",''));
+		});
+	});
+</script>

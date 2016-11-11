@@ -138,10 +138,12 @@ class PostsController extends AppController{
 			if($id!==$this->request->data['Post']['id']){
 				$this->Flash->error(__('Unable to update your post.'));
 			}
-			debug($this->request->data);exit;
 			
 			$this->Post->id = $this->request->data['Post']['id'];
 			$nowUploaded = $this->request->data['Attachment'];
+
+			//今回の編集で削除指定された画像を$post['Attachment']から取り除く
+			
 			$this->request->data['Attachment'] = $post['Attachment'];
 			if($nowUploaded !== null){
 				foreach($nowUploaded as $img){
@@ -152,6 +154,20 @@ class PostsController extends AppController{
 			$this->trimUploaded();
 
 			if($this->Post->saveAll($this->request->data,array('deep'=>true))){
+				if(!empty($this->request->data['Original']['removedImages'])){
+					foreach($this->request->data['Original']['removedImages'] as $key=>$val){
+						//debug($this->request->data['Attachment']);exit;
+						if($this->Post->Attachment->delete($this->request->data['Attachment'][$val]['id'])){
+							$this->Flash->success(
+								__('The image with id: %s has been deleted.',h($this->request->data['Attachment'][$val]['id']))
+							);
+						}else {
+							$this->Flash->error(
+								__('The image with id: %s could not be deleted.',h($this->request->data['Attachment'][$val]['id']))
+							);
+						}
+					}
+				}
 				$this->Flash->success(__('Your post has been updated.'));
 				return $this->redirect(array('action'=>'index'));
 			}
