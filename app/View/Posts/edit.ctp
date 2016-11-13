@@ -89,6 +89,57 @@ echo $this->Form->input('Attachment.0.photo',array(
 		<span id="cover0" class="input-xlg uneditable-input">select file</span>
 	</div>
 </div>
+
+<!-- 
+
+<form action="#" method="post" enctype="multipart/form-data">
+	<div id="fileForms" class="form-group" style="display: none;">
+	         <input type="file" class="file-input fileForm">
+	</div>
+</form>
+<div id="fileThumbnails">
+	<div class="fileThumbnail" onclick="clickPropagate()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
+		<a class="btn btn-inline"style="background-color: #00eeff">
+			<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+		</a>
+		<span class="input-xlg uneditable-input">select file</span>
+	</div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) 
+<script src="jquery-1.12.4.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed 
+<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script>
+	function clickPropagate(){
+		let idx = $('#fileThumbnails>.fileThumbnail').index($(this));
+		$('#fileForms>.fileForm').eq(idx).click();
+	}
+	$(function(){
+		$('#fileForms').on('change','.fileForm',function(){
+			let fileFormIdx = $('#fileForms>.fileForm').index($(this));
+			if($(this).val()==''){
+				$(this).remove();
+				$('#fileThumbnails>.fileThumbnail').eq(fileFormIdx).remove();
+				return;
+			}
+			$('#fileThumbnails>.fileThumbnail').eq(fileFormIdx).children('span').html($(this).val().replace("C:\\fakepath\\","");
+			let nextFileForm = '<input type="file" class="file-input fileForm">';
+			let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
+					      + '<a class="btn btn-inline"style="background-color: #00eeff">'
+					      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
+					      + '</a>'
+					      + '<span class="input-xlg uneditable-input">select file</span>'
+					      + '</div>';
+			$('#fileForms').append(nextFileForm);
+			$('#fileThumbnails').append(nextFileThumbnail);
+		});
+		submit buttonをおしたとき、#fileForms>.fileForm のname属性を順に名づけていく実装も忘れずに
+	}
+</script>
+
+-->
+
 <?php
 echo $this->Form->button(
 	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Save Post'),array(
