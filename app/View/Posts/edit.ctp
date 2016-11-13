@@ -94,11 +94,11 @@ echo $this->Form->input('Attachment.0.photo',array(
 
 <form action="#" method="post" enctype="multipart/form-data">
 	<div id="fileForms" class="form-group" style="display: none;">
-	         <input type="file" class="file-input fileForm">
+	         <input type="file" class="file-input fileForm" onchange="fileChange(this)" />
 	</div>
 </form>
 <div id="fileThumbnails">
-	<div class="fileThumbnail" onclick="clickPropagate()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
+	<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
 		<a class="btn btn-inline"style="background-color: #00eeff">
 			<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
 		</a>
@@ -111,29 +111,34 @@ echo $this->Form->input('Attachment.0.photo',array(
 <!-- Include all compiled plugins (below), or include individual files as needed 
 <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
-	function clickPropagate(){
-		let idx = $('#fileThumbnails>.fileThumbnail').index($(this));
+	function clickPropagate(fileThumbnail){
+		let idx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
 		$('#fileForms>.fileForm').eq(idx).click();
 	}
+
+	function formChange(fileForm){
+		let $fileForms = $('#fileForms>.fileForm');
+		let $fileThumbnail = $('#fileThumbnails>.fileThumbnail');
+		let fileFormIdx = $fileForms.index($(fileForm));
+		if($(fileForm).val()==''){
+			$(fileForm).remove();
+			$fileThumbnails).eq(fileFormIdx).remove();
+			return;
+		}
+		$fileThumbnails.eq(fileFormIdx).children('span').html($(this).val().replace("C:\\fakepath\\","");
+		if(fileFormIdx + 1 < $fileForms.length){return;}
+
+		let nextFileForm = '<input type="file" class="file-input fileForm" onchange="formChange(this)" />';
+		let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
+				      + '<a class="btn btn-inline"style="background-color: #00eeff">'
+				      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
+				      + '</a>'
+				      + '<span class="input-xlg uneditable-input">select file</span>'
+				      + '</div>';
+		$('#fileForms').append(nextFileForm);
+		$('#fileThumbnails').append(nextFileThumbnail);
+	}
 	$(function(){
-		$('#fileForms').on('change','.fileForm',function(){
-			let fileFormIdx = $('#fileForms>.fileForm').index($(this));
-			if($(this).val()==''){
-				$(this).remove();
-				$('#fileThumbnails>.fileThumbnail').eq(fileFormIdx).remove();
-				return;
-			}
-			$('#fileThumbnails>.fileThumbnail').eq(fileFormIdx).children('span').html($(this).val().replace("C:\\fakepath\\","");
-			let nextFileForm = '<input type="file" class="file-input fileForm">';
-			let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
-					      + '<a class="btn btn-inline"style="background-color: #00eeff">'
-					      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
-					      + '</a>'
-					      + '<span class="input-xlg uneditable-input">select file</span>'
-					      + '</div>';
-			$('#fileForms').append(nextFileForm);
-			$('#fileThumbnails').append(nextFileThumbnail);
-		});
 		submit buttonをおしたとき、#fileForms>.fileForm のname属性を順に名づけていく実装も忘れずに
 	}
 </script>
