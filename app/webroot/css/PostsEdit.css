@@ -11,9 +11,13 @@
 
 .imageCover .coverImage {
 	position: absolute;
-	left: 100px;
-	top: 45px;
+	left: 85px;
+	top: 40px;
 	font-size: 100px;
 	color: #a55;
 	background-color: rgba(0,0,0,0.7);
+}
+
+#fileThumbnails>.fileThumbnail:hover {
+	cursor: pointer;
 }
