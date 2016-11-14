@@ -33,14 +33,13 @@ App::uses('AuthComponent','Controller/Component');
  */
 class AppController extends Controller {
 	public $helpers = array(
-		'Html',
 		'Form',
+		'Html',
 		'Paginator',
 	);
 
 	public $components = array(
 		'Acl',
-		'Flash',
 		'Auth'=>array(
 			'loginAction'=>array(
 				'controller'=>'users',
@@ -70,6 +69,8 @@ class AppController extends Controller {
 				'Actions',
 			),
 		),
+		'Flash',
+		'Paginator',
 		'Session',
 	);
 

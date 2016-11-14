@@ -5,6 +5,14 @@
 echo $this->Form->create('Post',array('type'=>'file'));
 echo $this->Form->input('user_id',array('type'=>'hidden'));
 echo $this->Form->input('id',array('type'=>'hidden'));
+echo $this->Form->input('title',array(
+	'label'=>__('title'),
+	'class'=>'form-control',
+	'div'=>array(
+		'class'=>'form-group',
+	),
+	'required'=>true,
+));
 echo $this->Form->input('Category.id',array(
 	'label'=>__('Category'),
 	'options'=>$category,
@@ -13,6 +21,7 @@ echo $this->Form->input('Category.id',array(
 	'div'=>array(
 		'class'=>'form-group dropup',
 	),
+	'required'=>true,
 ));
 echo $this->Form->input('Tag.Tag',array(
 	'label'=>__('Tag<br>'),
@@ -24,13 +33,6 @@ echo $this->Form->input('Tag.Tag',array(
 		'class'=>'form-group',
 	),
 	'escape'=>false,
-));
-echo $this->Form->input('title',array(
-	'label'=>__('title'),
-	'class'=>'form-control',
-	'div'=>array(
-		'class'=>'form-group',
-	),
 ));
 echo $this->Form->input('body',array(
 	'type'=>'textarea',

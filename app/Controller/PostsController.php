@@ -75,9 +75,13 @@ class PostsController extends AppController{
 		$this->Prg->commonProcess();
 		$this->paginate = array(
 			'conditions'=>$this->Post->parseCriteria($this->passedArgs),
-			'order'=>array('Post.modified'=>'desc')
+			'order'=>array(
+				'Post.modified'=>'desc'
+			),
+			'maxLimit'=>20,
 		);
 		$this->set('posts',$this->paginate());
+//		debug($this->request->params['paging']);exit;
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
 		)));
