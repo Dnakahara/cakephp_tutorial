@@ -142,7 +142,6 @@ class PostsController extends AppController{
 			$this->Post->id = $this->request->data['Post']['id'];
 			$nowUploaded = $this->request->data['Attachment'];
 
-			//今回の編集で削除指定された画像を$post['Attachment']から取り除く
 			
 			$this->request->data['Attachment'] = $post['Attachment'];
 			if($nowUploaded !== null){

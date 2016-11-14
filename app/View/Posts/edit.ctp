@@ -68,25 +68,27 @@ for($i = 0; $i < count($post['Attachment']); $i++){
 </div>
 <?php endforeach; ?>
 <div id="AttachmentsWrap">
+	<div id="fileForms">
 <?php
 //webroot/files/attachment(モデル名)/photo(保存先ディレクトリ名) の下に保存
 echo __('Please select images you want to upload.');
 echo $this->Form->input('Attachment.0.photo',array(
-	'id'=>'file-input0',
-	'class'=>'file-input',
+	'class'=>'file-input fileForm',
 	'label'=>false,
 	'type'=>'file',
-	'div'=>array(
-		'class'=>'form-group',
-	),
+	'div'=>false,
 	'style'=>'display:none;',
+	'onchange'=>'fileChange(this)',
 ));
 ?>
-	<div id="input-wrap0" onclick="$('#file-input0').click()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
-		<a class="btn btn-inline"style="background-color: #00eeff">
-			<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-		</a>
-		<span id="cover0" class="input-xlg uneditable-input">select file</span>
+	</div>
+	<div id="fileThumbnails">
+		<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
+			<a class="btn btn-inline"style="background-color: #00eeff">
+				<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+			</a>
+			<span class="input-xlg uneditable-input">select file</span>
+		</div>
 	</div>
 </div>
 
@@ -97,47 +99,8 @@ echo $this->Form->input('Attachment.0.photo',array(
 	         <input type="file" class="file-input fileForm" onchange="fileChange(this)" />
 	</div>
 </form>
-<div id="fileThumbnails">
-	<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">
-		<a class="btn btn-inline"style="background-color: #00eeff">
-			<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
-		</a>
-		<span class="input-xlg uneditable-input">select file</span>
-	</div>
-</div>
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) 
-<script src="jquery-1.12.4.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed 
-<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 <script>
-	function clickPropagate(fileThumbnail){
-		let idx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
-		$('#fileForms>.fileForm').eq(idx).click();
-	}
-
-	function formChange(fileForm){
-		let $fileForms = $('#fileForms>.fileForm');
-		let $fileThumbnail = $('#fileThumbnails>.fileThumbnail');
-		let fileFormIdx = $fileForms.index($(fileForm));
-		if($(fileForm).val()==''){
-			$(fileForm).remove();
-			$fileThumbnails).eq(fileFormIdx).remove();
-			return;
-		}
-		$fileThumbnails.eq(fileFormIdx).children('span').html($(this).val().replace("C:\\fakepath\\","");
-		if(fileFormIdx + 1 < $fileForms.length){return;}
-
-		let nextFileForm = '<input type="file" class="file-input fileForm" onchange="formChange(this)" />';
-		let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
-				      + '<a class="btn btn-inline"style="background-color: #00eeff">'
-				      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
-				      + '</a>'
-				      + '<span class="input-xlg uneditable-input">select file</span>'
-				      + '</div>';
-		$('#fileForms').append(nextFileForm);
-		$('#fileThumbnails').append(nextFileThumbnail);
-	}
 	$(function(){
 		submit buttonをおしたとき、#fileForms>.fileForm のname属性を順に名づけていく実装も忘れずに
 	}
@@ -154,13 +117,13 @@ echo $this->Form->button(
 		'class'=>'form-group',
 	),
 	'escape'=>false,
-	'onclick'=>'selectedImageSetter()',
+	'onclick'=>'beforeSubmit()',
 ));
 echo $this->Form->end();
 ?>
 
 <script>
-	function selectedImageSetter(){
+	function beforeSubmit(){
 		let $thumbnails = $('.thumbnail');
 		for(var i = 0; i < $thumbnails.length; ++i){
 			if($thumbnails.eq(i).hasClass('removed')){
@@ -168,33 +131,45 @@ echo $this->Form->end();
 				$(img).prop('checked',true);
 			}
 		}
+
+		let $fileForms = $('#fileForms>.fileForm');
+		for(var i = 0; i < $fileForms.length; ++i){
+			$fileForms.eq(i).attr('name','data[Attachment]['+i+'][photo]');
+		}
 	}
+ 
+	function clickPropagate(fileThumbnail){
+		let idx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
+		console.log(idx);
+		$('#fileForms>.fileForm').eq(idx).click();
+	}
+
+	function fileChange(fileForm){
+		let $fileForms = $('#fileForms>.fileForm');
+		let $fileThumbnails = $('#fileThumbnails>.fileThumbnail');
+		let fileFormIdx = $fileForms.index($(fileForm));
+		console.log(fileFormIdx);
+		if($(fileForm).val()==''){
+			$(fileForm).remove();
+			$fileThumbnails.eq(fileFormIdx).remove();
+			return;
+		}
+		$fileThumbnails.eq(fileFormIdx).children('span').html($(fileForm).val().replace("C:\\fakepath\\",""));
+		if(fileFormIdx + 1 < $fileForms.length){return;}
+		console.log('hello');
+
+		let nextFileForm = '<input type="file" class="file-input fileForm" onchange="fileChange(this)" style="display: none;"/>';
+		let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
+				      + '<a class="btn btn-inline"style="background-color: #00eeff">'
+				      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
+				      + '</a>'
+				      + '<span class="input-xlg uneditable-input">select file</span>'
+				      + '</div>';
+		$('#fileForms').append(nextFileForm);
+		$('#fileThumbnails').append(nextFileThumbnail);
+	}
+
 	$(function(){
-		$('#AttachmentsWrap').on('change','.file-input',function(){
-			let Number = $(this).attr('id').substring(10);
-			let coverId = '#cover'+ Number;
-			if($(this).val()==''){
-				console.log($(this).val());
-				$(coverId).html('select file');
-			}
-			$(coverId).html($(this).val().replace("C:\\fakepath\\",''));
-
-			let inputWrapId = '#input-wrap' + Number;
-			let nextNumber = parseInt(Number,10) + 1;
-
-			let nextUploadForm = '<div class="form-group">'
-					   + '	<input type="file" name="data[Attachment]['+ nextNumber +'][photo]" id="file-input'+ nextNumber + '" class="file-input" style="display:none;"/>'
-					   + '</div>'
-					   + '<div id="input-wrap' + nextNumber + '" onclick="$(' + "'" + '#file-input' + nextNumber + "'" + ').click()" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
-					   + '	<a class="btn btn-inline" style="background-color: #00eeff">'
-					   + '		<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
-					   + '	</a>'
-					   + '	<span id="cover' + nextNumber + '" class="input-xlg uneditable-input">select file</span>'
-					   + '</div>';
-			
-			$('#AttachmentsWrap').append(nextUploadForm);
-		});
-
 		$('.imageCover').on('click','.thumbnail', function(){
 			if($(this).hasClass('removed')){
 				$(this).removeClass('removed');
@@ -205,6 +180,7 @@ echo $this->Form->end();
 				$(this).parent().html(this.outerHTML + '<span class="coverImage glyphicon glyphicon-remove" aria-hidden="true"></span>');
 			}
 		});
+
 		$('.imageCover').on('click','span', function(){
 			$(this).siblings().removeClass('removed');
 			$(this).parent().html($(this).siblings()[0]);
