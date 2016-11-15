@@ -85,7 +85,7 @@ class PostsController extends AppController{
 		$this->set('category',$this->Category->find('list',array(
 			'fields'=>array('Category.categoryname'),
 		)));
-		$this->set('tag',$this->Tag->find('list',array(
+		$this->set('tags',$this->Tag->find('list',array(
 			'fields'=>array('Tag.tagname'),
 		)));
 	}

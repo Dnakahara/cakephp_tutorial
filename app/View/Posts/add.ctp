@@ -1,5 +1,5 @@
 <?php echo $this->element('header'); ?>
-<?php echo $this->Html->css('PostsAdd.css'); ?>
+<?php echo $this->Html->css('blog.css?'.date("YmdHis")); ?>
 <h1><?php echo __('Add Post'); ?></h1>
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));

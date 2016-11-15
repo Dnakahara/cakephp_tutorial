@@ -1,17 +1,20 @@
 <?php echo $this->element('header'); ?>
-<?php echo $this->Html->css('PostsEdit.css'); ?>
+<?php echo $this->Html->css('blog.css?'.date('YmdHis')); ?>
+<div class="jumbotron" style="background-color: #c4cbfc;font-wieght: 900;font-size: large;font-family: Times New Roman;">
 <h1>Edit Post</h1>
+</div>
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));
 echo $this->Form->input('user_id',array('type'=>'hidden'));
 echo $this->Form->input('id',array('type'=>'hidden'));
 echo $this->Form->input('title',array(
 	'label'=>__('title'),
-	'class'=>'form-control',
+	'class'=>'form-control input-lg',
 	'div'=>array(
 		'class'=>'form-group',
 	),
 	'required'=>true,
+	'style'=>'font-size: large;font-weight: bold;',
 ));
 echo $this->Form->input('Category.id',array(
 	'label'=>__('Category'),
@@ -66,7 +69,7 @@ echo '</div>';
 <?php foreach($post['Attachment'] as $idx=>$data):  ?>
 <?php //for($i = 0; $i < count($post['Attachment']); $i++): ?>
 <div class="none PostremovedImages">
-	<input type="checkbox" name="data[Original][removedImages][]" value="<?php echo $idx ?>" id="PostremovedImages<?php echo $idx ?>" />
+	<input type="checkbox" name="data[Original][removedImages][]" value="<?php echo $idx ?>" id="PostremovedImages<?php echo $idx ?>" style="display:none;" />
 </div>
 <?php endforeach; ?>
 <div id="AttachmentsWrap">

@@ -1,7 +1,0 @@
-.none {
-	display: none;
-}
-
-#fileThumbnails>.fileThumbnail:hover {
-	cursor: pointer;
-}

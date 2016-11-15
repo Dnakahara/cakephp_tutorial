@@ -1,37 +1,43 @@
 <?php echo $this->Html->css('lightbox.min.css'); ?>
-<?php echo $this->Html->css('slideModal.css'); ?>
+<?php echo $this->Html->css('blog.css?'.date('YmdHis')); ?>
 <?php echo $this->Html->script('lightbox.min.js'); ?>
 <?php echo $this->element('header'); ?>
-<h1><?php echo h($post['Post']['title']); ?></h1>
-<p><small><?php echo __('Created: '); echo $post['Post']['created']; ?></small></p>
-<p><?php echo __('Category: '); echo h($post['Category']['categoryname']); ?></p>
-<p style="margin-bottom: 20px;"><?php echo __('Tag: '); ?>
-<?php foreach($post['Tag'] as $tag):
-echo h($tag['tagname']);
-endforeach;
-?></p> 
-<p><?php echo h($post['Post']['body']); ?></p>
-
-<?php 
-for($i = 0; $i < count($post['Attachment']); $i++){
-	if($i % 6 == 0){echo '<div class="row">';}
-	echo '<div class="col-md-2">';
-	echo $this->Html->image($imgSrcPrefix.$post['Attachment'][$i]['photo_dir'].DS.$post['Attachment'][$i]['photo'],array(
-		'class'=>'img-responsive thumbnail',
-		'id'=>'thumbnail'.$i,
-		'width'=>'256',
-	));
-	echo '</div>';
-	if($i % 6 == 5 || $i+1 >= count($post['Attachment'])){echo '</div>';}
-}
-?>
-
-<div id="modal-overlay">
-	<div id="modal-content">
-		<img src="/images/close.png" alt="close modal" class="modalclose" />
+<div id="post" style="font-family: 'Times New Roman',Symbol;">
+	<div class="jumbotron" style="background-color: #dde;font-wieght: 900;font-size: large;font-family: Times New Roman;color: #385399;">
+		<h1><?php echo h($post['Post']['title']); ?></h1>
 	</div>
-	<div id="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
-	<div id="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+	<p><small><?php echo __('Created: '); echo $post['Post']['created']; ?></small></p>
+	<p><?php echo __('Category: '); echo h($post['Category']['categoryname']); ?></p>
+	<p style="margin-bottom: 20px;"><?php echo __('Tag: '); ?>
+		<?php 
+		foreach($post['Tag'] as $tag):
+			echo h($tag['tagname']);
+		endforeach;
+		?>
+	</p> 
+	<p><?php echo h($post['Post']['body']); ?></p>
+
+	<?php 
+	for($i = 0; $i < count($post['Attachment']); $i++){
+		if($i % 6 == 0){echo '<div class="row">';}
+		echo '<div class="col-md-2">';
+		echo $this->Html->image($imgSrcPrefix.$post['Attachment'][$i]['photo_dir'].DS.$post['Attachment'][$i]['photo'],array(
+			'class'=>'img-responsive thumbnail',
+			'id'=>'thumbnail'.$i,
+			'width'=>'256',
+		));
+		echo '</div>';
+		if($i % 6 == 5 || $i+1 >= count($post['Attachment'])){echo '</div>';}
+	}
+	?>
+
+	<div id="modal-overlay">
+		<div id="modal-content">
+			<img src="/images/close.png" alt="close modal" class="modalclose" />
+		</div>
+		<div id="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
+		<div id="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
+	</div>
 </div>
 
 <script>

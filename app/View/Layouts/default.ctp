@@ -37,49 +37,146 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('script');
 	?>
 	<?php echo $this->Html->css('bootstrap.min'); ?>
+	<?php echo $this->Html->css('blog.css?'.date("YmdHis")); ?>
 	<?php echo $this->Html->script('jquery-1.12.4.min.js'); ?>
 	<?php echo $this->Html->script('bootstrap.min.js'); ?>
 </head>
 <body style="padding-top: 70px;letter-spacing:0.1em;">
-	<div class="col-md-2">
-		<div class="sidevar-nav affix" style="background-color: #bbb;padding: auto 0px;">
-			<?php if(is_null($username)): 
-			echo '<p>LoginUser: GUEST</p>';
-			echo $this->Html->link(
-				__('Sign Up!'),array(
-					'controller'=>'users',
-					'action'=>'add',
-				),
-				array(
-					'class'=>'col-md-6 btn btn-success',
-				)
-			);
-			echo $this->Html->link(
-				__('Log In!'),array(
-					'controller'=>'users',
-					'action'=>'login',
-				),
-				array(
-					'class'=>'col-md-6 btn btn-info',
-				)
-			);
-			 else:?>
-			<p>LoginUser: <?php echo h($username); ?></p>
+	<div class="col-md-offset-2 col-md-8" style="background-color: #ffffd2;padding-top: 15px;">
+		<div id="header">
+			<nav class="navbar nav-tabs navbar-default navbar-fixed-top" style="background-color: #2f3277;padding:2px 0;">
+				<ul class="nav navbar-nav" style="width: 100%;">
+					<li class="nav-item col-md-offset-2" style="padding-left: 15px;">
+						<?php echo $this->Html->link(__('Posts'),array(
+								'controller'=>'posts',
+								'action'=>'index',
+							),
+							array(
+								'class'=>'nav-a',
+								'style'=>'color:#ffffd2;',
+							));
+						?>
+					</li>
+					<li class="nav-item">
+						<?php echo $this->Html->link(__('Users'),array(
+								'controller'=>'users',
+								'action'=>'index',
+							),
+							array(
+								'class'=>'nav-a',
+								'style'=>'color:#ffffd2;',
+							));
+						?>
+					</li>
+					<li class="nav-item">
+						<?php echo $this->Html->link(__('Groups'),array(
+								'controller'=>'groups',
+								'action'=>'index',
+							),
+							array(
+								'class'=>'nav-a',
+								'style'=>'color:#ffffd2;',
+							)); 
+						?>
+					</li>
+					<li class="nav-item">
+						<?php echo $this->Html->link(__('Categorys'),array(
+								'controller'=>'categories',
+								'action'=>'index',
+							),
+							array(
+								'class'=>'nav-a',
+								'style'=>'color:#ffffd2;',
+							)); 
+						?>
+					</li>
+					<li class="nav-item">
+						<?php echo $this->Html->link(__('Tags'),array(
+								'controller'=>'tags',
+								'action'=>'index',
+							),
+							array(
+								'class'=>'nav-a',
+								'style'=>'color:#ffffd2;',
+							)); 
+						?>
+					</li>
+					<?php if(is_null($username)): ?>
+					<li class="nav-item" style="float: right;margin-right: 15px;">
+						<?php
+						echo $this->Html->link(
+							__('Sign Up!'),array(
+								'controller'=>'users',
+								'action'=>'add',
+							),
+							array(
+								'id'=>'signupButton',
+								'class'=>'btn btn-success',
+								'style'=>'background-color: #ffffd2;border-color:#ffffd2;color:#220;',
+							)
+						);
+						?>
+					</li>
+					<li class="nav-item" style="float: right;margin-right: 5px;">
+						<?php
+						echo $this->Html->link(
+							__('Log In!'),array(
+								'controller'=>'users',
+								'action'=>'login',
+							),
+							array(
+								'id'=>'loginButton',
+								'class'=>'btn btn-md',
+								'style'=>'background-color: #ffffd2;border-color:#ffffd2;color:#220;',
+							)
+						);
+						echo '</li>';
+						?>
+					<?php else:?>
+					<li class="nav-item" style="float: right;margin-right: 15px;">
+					<?php
+					echo $this->Html->link(
+						__('Log out'),array(
+							'controller'=>'users',
+							'action'=>'logout',
+						),
+						array(
+							'id'=>'logoutButton',
+							'class'=>'btn btn-md',
+							'style'=>'background-color: #ffffd2;border-color:#ffffd2;color:#220;',
+						)
+					);
+					?>
+					</li>
+					<li class="nav-item" style="height: 48px;width: 141px;line-height: 50px;text-align: center;float: right;margin-right: 15px;border-color:#ffffd2;color:#ffffd2;border-radius: 5px;">
+						<?php echo __('LoginUser: ').h($username); ?>
+					</li>
+					<?php endif; ?>
+				</ul>
+			</nav>
+		</div><!-- header -->
+		<div id="content">
+
+			<?php echo $this->Flash->render(); ?>
+			<?php echo $this->Flash->render('auth'); ?>
+			<?php echo $this->fetch('content'); ?>
+		</div>
+		<div id="footer">
 			<?php
 			echo $this->Html->link(
-				__('Log out'),array(
-					'controller'=>'users',
-					'action'=>'logout',
-				),
-				array(
-					'class'=>'col-md-6 btn btn-default btn-block',
-					'style'=>'background-color:#0f5faf;color:#ffffff;',
-				)
+			$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
+			'http://www.cakephp.org/',
+			array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
 			);
-			endif;
 			?>
-			<br/>
-
+			<p>
+				<?php echo $cakeVersion; ?>
+			</p>
+		</div>
+		<?php echo $this->element('sql_dump'); ?>
+	</div><!-- col-md-8 -->
+	<div class="col-md-2">
+		<div class="sidevar-nav affix" style="background-color: #bbb;padding: auto 0px;">
 			<form id="zipcode-form" action="/zipcodes/search" method="POST">
 				<div class="input text form-group">
 					<label for="ZipcodeZipcode" class="control-label"><?php echo __('Zipcode');?></label>
@@ -98,55 +195,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				</select>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-10">
-<!--		<div class="container"> -->
-			<div id="header">
-				<!-- <h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1> -->
-				<nav class="navbar nav-tabs navbar-default navbar-fixed-top">
-					<ul class="nav navbar-nav">
-						<li><?php echo $this->Html->link(__('Posts'),array(
-							'controller'=>'posts',
-							'action'=>'index',
-						)); ?></li>
-						<li><?php echo $this->Html->link(__('Users'),array(
-							'controller'=>'users',
-							'action'=>'index',
-						)); ?></li>
-						<li><?php echo $this->Html->link(__('Groups'),array(
-							'controller'=>'groups',
-							'action'=>'index',
-						)); ?></li>
-						<li><?php echo $this->Html->link(__('Categorys'),array(
-							'controller'=>'categories',
-							'action'=>'index',
-						)); ?></li>
-						<li><?php echo $this->Html->link(__('Tags'),array(
-							'controller'=>'tags',
-							'action'=>'index',
-						)); ?></li>
-						</ul>
-				</nav>
-			</div>
-			<div id="content">
-
-				<?php echo $this->Flash->render(); ?>
-				<?php echo $this->Flash->render('auth'); ?>
-				<?php echo $this->fetch('content'); ?>
-			</div>
-			<div id="footer">
-	<?php echo $this->Html->link(
-		$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
-		'http://www.cakephp.org/',
-		array('target' => '_blank', 'escape' => false, 'id' => 'cake-powered')
-	);
-	?>
-				<p>
-					<?php echo $cakeVersion; ?>
-				</p>
-			</div>
-		<?php echo $this->element('sql_dump'); ?>
-<!--		</div> -->
 	</div>
 	<script>
 		function addressSelected(){

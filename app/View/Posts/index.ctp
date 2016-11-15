@@ -1,5 +1,4 @@
-<?php echo $this->element('header'); ?>
-<div class="jumbotron">
+<div class="jumbotron" style="background-color: #ffa240;font-wieght: 900;font-size: large;font-family: Times New Roman;">
 <h1>Blog posts</h1>
 </div>
 <?php echo $this->Flash->render('authorityError'); ?>
@@ -20,14 +19,17 @@ echo $this->Html->link(
 	'novalidate'=>true,
 ));
 ?>
+<div id="searchField">
 <fieldset>
 <legend><?php echo __('Search'); ?></legend>
 <?php 
 echo $this->Form->input('title',array(
+	'id'=>'searchTitle',
 	'label'=>__('Title'),
 	'required'=>false,
 ));
 echo $this->Form->input('category_id',array(
+	'id'=>'searchCategory',
 	'label'=>__('Category'),
 	'options'=>$category,
 	'empty'=>__('Not Selected'),
@@ -35,14 +37,16 @@ echo $this->Form->input('category_id',array(
 ?><label>Tag</label><br/>
 <?php
 echo $this->Form->input('tag_id',array(
+	'id'=>'searchTag',
 	'label'=>false,
-	'options'=>$tag,
+	'options'=>$tags,
 	'multiple'=>'checkbox',
 	'class'=>'checkbox-inline',
 ));
 echo $this->Form->button(
 	'<span class="glyphicon glyphicon-search" aria-hidden="true"></span>'.__('Search'),array(
 	'type'=>'submit',
+	'id'=>'postSearchBtn',
 	'class'=>'btn btn-primary',
 	'div'=>array(
 		'class'=>'form-group',
@@ -52,6 +56,8 @@ echo $this->Form->button(
 ?>
 </fieldset>
 <?php echo $this->Form->end(); ?>
+</div>
+<!--
 <table class="table-bordered table-striped table-condensed" style="line-height: 2.5em;margin-bottom: 20px;">
 	<thead>
 		<tr class="row">
@@ -61,8 +67,6 @@ echo $this->Form->button(
 			<th class="col-md-2"><?php echo __('Change'); ?></th>
 		</tr>
 	</thead>
-
-	<!-- ここから、$posts配列をループして、投稿記事の情報を表示 -->
 
 	<tbody>
 		<?php foreach($posts as $post): ?>
@@ -109,8 +113,61 @@ echo $this->Form->button(
 		</tr>
 		<?php endforeach; ?>
 	</tbody>
-	<?php unset($posts); ?>
 </table>
+-->
+<div id="postsWrap">
+	<?php foreach($posts as $post):
+	echo '<div class="post">';
+		echo '<h2 class="postTitle">';
+			echo $this->Html->link(
+				$post['Post']['title'],array(
+					'controller'=>'posts',
+					'action'=>'view',
+					$post['Post']['id'],
+				),
+				array(
+					'style'=>'width:100%; height:100%; display:block;color: #385399;'
+				)
+			);
+		echo '</h2>';
+		echo '<p class="postAuthor">';
+			echo '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.__('Author: ').$post['User']['username'];
+		echo '</p>'; 
+		echo '<p class="postCategory">';
+			echo '<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>'.__('Category');
+			echo '<p style="margin-left: 10px;">'.$post['Category']['categoryname'].'</p>';
+		echo '</p>';
+		echo '<ul class="postTags">';
+			foreach($post['Tag'] as $tag):
+				echo '<li class="postTag"><a onclick="tagClick('.$tag['id'].')"><span>'.$tag['tagname'].'</span></a></li>';
+			endforeach;
+		echo '</ul>';
+		echo $this->Html->link(
+			__('Edit'),array(
+				'controller'=>'posts',
+				'action'=>'edit',
+				$post['Post']['id'],
+			),
+			array(
+				'class'=>'btn postEditBtn',
+			)
+		);
+		echo $this->Form->postLink(
+			__('Delete'),array(
+				'controller'=>'posts',
+				'action'=>'delete',
+				$post['Post']['id']
+			),
+			array(
+				'confirm'=>__('Are you sure?'),
+				'class'=>'btn postDeleteBtn',
+			)
+		);
+	echo '</div>';
+	?>
+	<?php endforeach; ?>
+	<?php unset($posts); ?>
+</div>
 <div class="pagination">
 <?php
 // 次ページと前ページのリンクを表示する
@@ -138,3 +195,10 @@ echo $this->Paginator->next(
 echo $this->Paginator->counter();
 ?>
 </div>
+<script>
+	function tagClick(tagid){
+		$('#searchTag input').eq(parseInt(tagid,10)).attr('checked',true);
+		$('#postSearchBtn').click();
+	}
+
+</script>
