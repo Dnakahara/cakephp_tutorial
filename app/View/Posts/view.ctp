@@ -3,7 +3,7 @@
 <?php echo $this->Html->script('lightbox.min.js'); ?>
 <?php echo $this->element('header'); ?>
 <div id="post" style="font-family: 'Times New Roman',Symbol;">
-	<div class="jumbotron" style="background-color: #dde;font-wieght: 900;font-size: large;font-family: Times New Roman;color: #385399;">
+	<div class="jumbotron">
 		<h1><?php echo h($post['Post']['title']); ?></h1>
 	</div>
 	<p><small><?php echo __('Created: '); echo $post['Post']['created']; ?></small></p>

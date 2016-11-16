@@ -1,6 +1,7 @@
 <?php echo $this->element('header'); ?>
 <?php echo $this->Html->css('blog.css?'.date("YmdHis")); ?>
 <h1><?php echo __('Add Post'); ?></h1>
+<div class="add">
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));
 echo $this->Form->input('title',array(
@@ -74,7 +75,7 @@ echo $this->Form->button(
 ));
 echo $this->Form->end();
 ?>
-
+</div><!-- .add -->
 
 <script>
 	function beforeSubmit(){

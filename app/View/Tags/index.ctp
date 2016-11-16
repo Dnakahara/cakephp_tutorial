@@ -1,5 +1,5 @@
 <?php echo $this->element('header'); ?>
-<div class="jumbotron">
+<div class="jumbotron index">
 <h1><?php echo __('Tag List'); ?></h1>
 </div>
 <table class="table-bordered table-striped table-condensed" style="line-height: 2.5em;">

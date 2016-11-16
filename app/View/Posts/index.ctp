@@ -1,61 +1,51 @@
-<div class="jumbotron" style="background-color: #ffa240;font-wieght: 900;font-size: large;font-family: Times New Roman;">
-<h1>Blog posts</h1>
+<div class="jumbotron index">
+<h1><strong style="color: #5787F4;">B</strong>log posts</h1>
 </div>
 <?php echo $this->Flash->render('authorityError'); ?>
-<?php 
-echo $this->Html->link(
-	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Add Post'),array(
-		'controller'=>'posts',
-		'action'=>'add',
-	),
-	array(
-		'class'=>'btn btn-info btn-block',
-		'escape'=>false,
-		'style'=>'text-align: center;',
-	)
-);
-?><p><?php __('Order : Newer'); ?></p>
-<?php echo $this->Form->create('Post',array(
-	'novalidate'=>true,
-));
-?>
 <div id="searchField">
-<fieldset>
-<legend><?php echo __('Search'); ?></legend>
-<?php 
-echo $this->Form->input('title',array(
-	'id'=>'searchTitle',
-	'label'=>__('Title'),
-	'required'=>false,
-));
-echo $this->Form->input('category_id',array(
-	'id'=>'searchCategory',
-	'label'=>__('Category'),
-	'options'=>$category,
-	'empty'=>__('Not Selected'),
-));
-?><label>Tag</label><br/>
-<?php
-echo $this->Form->input('tag_id',array(
-	'id'=>'searchTag',
-	'label'=>false,
-	'options'=>$tags,
-	'multiple'=>'checkbox',
-	'class'=>'checkbox-inline',
-));
-echo $this->Form->button(
-	'<span class="glyphicon glyphicon-search" aria-hidden="true"></span>'.__('Search'),array(
-	'type'=>'submit',
-	'id'=>'postSearchBtn',
-	'class'=>'btn btn-primary',
-	'div'=>array(
-		'class'=>'form-group',
-	),
-	'escape'=>false,
-));
-?>
-</fieldset>
-<?php echo $this->Form->end(); ?>
+	<button type="button" id="toggleSearchBtn" class="btn btn-block btn-info" div="form-group" style="letter-spacing: 0.1em;">
+		<span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search
+	</button>
+	<?php echo $this->Form->create('Post',array(
+		'novalidate'=>true,
+	));
+	?>
+		<fieldset id="postSearchField" class="none">
+		<legend><?php echo __('Please input infomation for Searching'); ?></legend>
+		<?php 
+		echo $this->Form->input('title',array(
+			'id'=>'searchTitle',
+			'label'=>__('Title'),
+			'required'=>false,
+		));
+		echo $this->Form->input('category_id',array(
+			'id'=>'searchCategory',
+			'label'=>__('Category'),
+			'options'=>$category,
+			'empty'=>__('Not Selected'),
+		));
+		?><label>Tag</label><br/>
+		<?php
+		echo $this->Form->input('tag_id',array(
+			'id'=>'searchTag',
+			'label'=>false,
+			'options'=>$tags,
+			'multiple'=>'checkbox',
+			'class'=>'checkbox-inline',
+		));
+		echo $this->Form->button(
+			'<span class="glyphicon glyphicon-search" aria-hidden="true"></span>'.__('Search'),array(
+			'type'=>'submit',
+			'id'=>'postSearchBtn',
+			'class'=>'btn btn-primary',
+			'div'=>array(
+				'class'=>'form-group',
+			),
+			'escape'=>false,
+		));
+		?>
+		</fieldset>
+	<?php echo $this->Form->end(); ?>
 </div>
 <!--
 <table class="table-bordered table-striped table-condensed" style="line-height: 2.5em;margin-bottom: 20px;">
@@ -117,7 +107,7 @@ echo $this->Form->button(
 -->
 <div id="postsWrap">
 	<?php foreach($posts as $post):
-	echo '<div class="post">';
+	echo '<div class="post col-md-4">';
 		echo '<h2 class="postTitle">';
 			echo $this->Html->link(
 				$post['Post']['title'],array(
@@ -126,22 +116,31 @@ echo $this->Form->button(
 					$post['Post']['id'],
 				),
 				array(
-					'style'=>'width:100%; height:100%; display:block;color: #385399;'
+					'style'=>'width:100%; height:100%; display:block;color: #4D4E53;'
 				)
 			);
 		echo '</h2>';
-		echo '<p class="postAuthor">';
+		echo '<p class="postInfo">';
 			echo '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.__('Author: ').$post['User']['username'];
 		echo '</p>'; 
-		echo '<p class="postCategory">';
-			echo '<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>'.__('Category');
-			echo '<p style="margin-left: 10px;">'.$post['Category']['categoryname'].'</p>';
+		echo '<p class="postInfo">';
+			echo '<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>'.__('Category: ').$post['Category']['categoryname'];
 		echo '</p>';
-		echo '<ul class="postTags">';
+		echo '<div style="clear: both"></div>';
+		echo '<ul>';
 			foreach($post['Tag'] as $tag):
-				echo '<li class="postTag"><a onclick="tagClick('.$tag['id'].')"><span>'.$tag['tagname'].'</span></a></li>';
+				echo '<li class="postTag postInfo"><a onclick="tagClick('.$tag['id'].')"><span>'.$tag['tagname'].'</span></a></li>';
 			endforeach;
 		echo '</ul>';
+		echo '<div style="clear: both"></div>';
+		$bodyThumbnailMax = 200;
+		$bodyThumbnail = mb_substr($post['Post']['body'],0,$bodyThumbnailMax,"utf-8");
+		if(mb_strlen($bodyThumbnail,"utf-8") == $bodyThumbnailMax){
+			$bodyThumbnail = $bodyThumbnail.'...';
+		}
+
+		echo $bodyThumbnail;
+		echo '<div style="clear: both"></div>';
 		echo $this->Html->link(
 			__('Edit'),array(
 				'controller'=>'posts',
@@ -168,6 +167,7 @@ echo $this->Form->button(
 	<?php endforeach; ?>
 	<?php unset($posts); ?>
 </div>
+<div style="clear: both"></div>
 <div class="pagination">
 <?php
 // 次ページと前ページのリンクを表示する
@@ -200,5 +200,23 @@ echo $this->Paginator->counter();
 		$('#searchTag input').eq(parseInt(tagid,10)).attr('checked',true);
 		$('#postSearchBtn').click();
 	}
+
+	let postSearchFieldToggle = false;
+	$(function(){
+		$('#toggleSearchBtn').click(function(){
+			$(this).blur();
+			let $postSearchField = $('#postSearchField');
+			$postSearchField.toggle('fast');
+			postSearchFieldToggle = !postSearchFieldToggle;
+			
+			if(postSearchFieldToggle){
+				$(this).html('<span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>Close Search');
+				console.log('open');
+			}else{
+				$(this).html('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search');
+				console.log('close');
+			}
+		});
+	});
 
 </script>

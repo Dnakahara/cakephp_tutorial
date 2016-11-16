@@ -1,5 +1,5 @@
 <?php echo $this->element('header'); ?>
-<div class="jumbotron">
+<div class="jumbotron index">
 <h1>User List</h1>
 </div>
 <?php echo $this->Flash->render('authorityError'); ?>

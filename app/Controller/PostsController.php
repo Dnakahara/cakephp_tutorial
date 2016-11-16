@@ -78,7 +78,8 @@ class PostsController extends AppController{
 			'order'=>array(
 				'Post.modified'=>'desc'
 			),
-			'maxLimit'=>20,
+			'limit'=>30,
+			'maxLimit'=>30,
 		);
 		$this->set('posts',$this->paginate());
 //		debug($this->request->params['paging']);exit;

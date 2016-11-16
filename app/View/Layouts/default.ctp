@@ -41,10 +41,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php echo $this->Html->script('jquery-1.12.4.min.js'); ?>
 	<?php echo $this->Html->script('bootstrap.min.js'); ?>
 </head>
-<body style="padding-top: 70px;letter-spacing:0.1em;">
-	<div class="col-md-offset-2 col-md-8" style="background-color: #ffffd2;padding-top: 15px;">
+<body style="padding-top: 52px;letter-spacing:0.1em;">
+	<div class="col-md-offset-2 col-md-8" style="background-image: url('img/cream-paper.png');background-color: #333333;padding-top: 15px;">
 		<div id="header">
-			<nav class="navbar nav-tabs navbar-default navbar-fixed-top" style="background-color: #2f3277;padding:2px 0;">
+			<nav class="navbar nav-tabs navbar-default navbar-fixed-top">
 				<ul class="nav navbar-nav" style="width: 100%;">
 					<li class="nav-item col-md-offset-2" style="padding-left: 15px;">
 						<?php echo $this->Html->link(__('Posts'),array(
@@ -53,7 +53,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'class'=>'nav-a',
-								'style'=>'color:#ffffd2;',
 							));
 						?>
 					</li>
@@ -64,7 +63,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'class'=>'nav-a',
-								'style'=>'color:#ffffd2;',
 							));
 						?>
 					</li>
@@ -75,7 +73,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'class'=>'nav-a',
-								'style'=>'color:#ffffd2;',
 							)); 
 						?>
 					</li>
@@ -86,7 +83,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'class'=>'nav-a',
-								'style'=>'color:#ffffd2;',
 							)); 
 						?>
 					</li>
@@ -97,10 +93,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'class'=>'nav-a',
-								'style'=>'color:#ffffd2;',
 							)); 
 						?>
 					</li>
+					<li class="nav-item col-md-2" style="float: right;"></li>
 					<?php if(is_null($username)): ?>
 					<li class="nav-item" style="float: right;margin-right: 15px;">
 						<?php
@@ -112,7 +108,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							array(
 								'id'=>'signupButton',
 								'class'=>'btn btn-success',
-								'style'=>'background-color: #ffffd2;border-color:#ffffd2;color:#220;',
 							)
 						);
 						?>
@@ -127,7 +122,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							array(
 								'id'=>'loginButton',
 								'class'=>'btn btn-md',
-								'style'=>'background-color: #ffffd2;border-color:#ffffd2;color:#220;',
 							)
 						);
 						echo '</li>';
@@ -143,13 +137,26 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						array(
 							'id'=>'logoutButton',
 							'class'=>'btn btn-md',
-							'style'=>'background-color: #ffffd2;border-color:#ffffd2;color:#220;',
 						)
 					);
 					?>
 					</li>
-					<li class="nav-item" style="height: 48px;width: 141px;line-height: 50px;text-align: center;float: right;margin-right: 15px;border-color:#ffffd2;color:#ffffd2;border-radius: 5px;">
+					<li class="nav-item" style="height: 48px;width: 141px;line-height: 50px;text-align: center;float: right;margin-right: 15px;border-color:#ffe3ad;color:#ffe3ad;border-radius: 5px;">
 						<?php echo __('LoginUser: ').h($username); ?>
+					</li>
+					<li class="nav-item" style="float: right;margin-right: 15px;">
+						<?php
+						echo $this->Html->link(
+							'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Add Post'),array(
+								'controller'=>'posts',
+								'action'=>'add',
+							),
+							array(
+								'class'=>'btn addSaveBtn',
+								'escape'=>false,
+							)
+						);
+						?>
 					</li>
 					<?php endif; ?>
 				</ul>
@@ -173,10 +180,10 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 				<?php echo $cakeVersion; ?>
 			</p>
 		</div>
-		<?php echo $this->element('sql_dump'); ?>
+		<?php #echo $this->element('sql_dump'); ?>
 	</div><!-- col-md-8 -->
-	<div class="col-md-2">
-		<div class="sidevar-nav affix" style="background-color: #bbb;padding: auto 0px;">
+	<div class="col-md-2" style="margin-top: 52px;">
+		<div class="sidevar-nav" style="background-color: #bbb;padding: 10px;">
 			<form id="zipcode-form" action="/zipcodes/search" method="POST">
 				<div class="input text form-group">
 					<label for="ZipcodeZipcode" class="control-label"><?php echo __('Zipcode');?></label>
