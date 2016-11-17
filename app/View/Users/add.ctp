@@ -1,5 +1,5 @@
 <?php echo $this->element('header'); ?>
-<div class="usersForm">
+<div class="users form">
 <?php echo $this->Form->create('User'); ?>
 	<fieldset>
 		<legend><?php 
@@ -8,7 +8,7 @@
 			<?php
 			echo $this->Form->input('username',array(
 				'label'=>__('UserName'),
-				'class'=>'form-control',
+				'class'=>'form-control input-lg',
 				'required'=>true,
 				'div'=>array(
 					'class'=>'form-group',
@@ -17,7 +17,7 @@
 			echo $this->Form->input('password',array(
 				'type'=>'password',
 				'label'=>__('Password'),
-				'class'=>'form-control',
+				'class'=>'form-control input-lg',
 				'required'=>true,
 				'div'=>array(
 					'class'=>'password required form-group',
@@ -27,7 +27,7 @@
 			echo $this->Form->input('confirm',array(
 				'type'=>'password',
 				'label'=>__('Password Again'),
-				'class'=>'form-control',
+				'class'=>'form-control input-lg',
 				'required'=>true,
 				'div'=>array(
 					'class'=>'input password',

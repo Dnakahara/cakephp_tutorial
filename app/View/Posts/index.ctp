@@ -1,4 +1,4 @@
-<div class="jumbotron index">
+<div class="jumbotron">
 <h1><strong style="color: #5787F4;">B</strong>log posts</h1>
 </div>
 <?php echo $this->Flash->render('authorityError'); ?>
@@ -15,6 +15,7 @@
 		<?php 
 		echo $this->Form->input('title',array(
 			'id'=>'searchTitle',
+			'class'=>'input-lg',
 			'label'=>__('Title'),
 			'required'=>false,
 		));
@@ -37,7 +38,7 @@
 			'<span class="glyphicon glyphicon-search" aria-hidden="true"></span>'.__('Search'),array(
 			'type'=>'submit',
 			'id'=>'postSearchBtn',
-			'class'=>'btn btn-primary',
+			'class'=>'btn btn-info',
 			'div'=>array(
 				'class'=>'form-group',
 			),
@@ -126,13 +127,13 @@
 		echo '<p class="postInfo">';
 			echo '<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>'.__('Category: ').$post['Category']['categoryname'];
 		echo '</p>';
-		echo '<div style="clear: both"></div>';
-		echo '<ul>';
+		echo '<ul class="postTags">';
 			foreach($post['Tag'] as $tag):
-				echo '<li class="postTag postInfo"><a onclick="tagClick('.$tag['id'].')"><span>'.$tag['tagname'].'</span></a></li>';
+				echo '<li class="postTag postInfo"><a id="tag-a" href="javascript:void(0)" onclick="tagClick('.$tag['id'].')"><span>'.$tag['tagname'].'</span></a></li>';
 			endforeach;
 		echo '</ul>';
-		echo '<div style="clear: both"></div>';
+		echo '<div style="clear: both;width: 0px;height: 0px;"></div>';
+		echo '<hr>';
 		$bodyThumbnailMax = 200;
 		$bodyThumbnail = mb_substr($post['Post']['body'],0,$bodyThumbnailMax,"utf-8");
 		if(mb_strlen($bodyThumbnail,"utf-8") == $bodyThumbnailMax){
@@ -140,7 +141,7 @@
 		}
 
 		echo $bodyThumbnail;
-		echo '<div style="clear: both"></div>';
+		echo '<div style="clear: both;width: 0px;height: 0px;"></div>';
 		echo $this->Html->link(
 			__('Edit'),array(
 				'controller'=>'posts',
@@ -177,6 +178,7 @@ echo $this->Paginator->prev(
 	null,
 	array(
 		'class' => 'disabled',
+		'style'=>'margin: 20px;',
 	)
 );
 // ページ番号を表示する
@@ -188,6 +190,7 @@ echo $this->Paginator->next(
 	null,
 	array(
 		'class' => 'disabled',
+		'style'=>'margin: 20px;',
 	)
 );
 
@@ -196,8 +199,31 @@ echo $this->Paginator->counter();
 ?>
 </div>
 <script>
+	function Sleep( T ){ 
+		var d1 = new Date().getTime(); 
+		var d2 = new Date().getTime(); 
+		while( d2 < d1+1000*T ){    //T秒待つ 
+			d2=new Date().getTime(); 
+		} 
+		return; 
+	} 
+
+	function searchFormClear(){
+		$('#searchTitle').val('');
+		$('#searchCategory').val('');
+		let $searchTags = $('input[id^="searchTag"]');
+		console.log($searchTags);
+		for(let i = 0; i < $searchTags.length; ++i){
+			let searchTag = '#searchTag'+ (i+1);
+			console.log(searchTag);
+			$(searchTag).prop('checked',false);
+		}
+	}
+
 	function tagClick(tagid){
-		$('#searchTag input').eq(parseInt(tagid,10)).attr('checked',true);
+		searchFormClear();
+		let taginput = '#searchTag'+tagid;
+		$(taginput).prop('checked',true);
 		$('#postSearchBtn').click();
 	}
 
@@ -211,10 +237,8 @@ echo $this->Paginator->counter();
 			
 			if(postSearchFieldToggle){
 				$(this).html('<span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>Close Search');
-				console.log('open');
 			}else{
 				$(this).html('<span class="glyphicon glyphicon-search" aria-hidden="true"></span>Search');
-				console.log('close');
 			}
 		});
 	});

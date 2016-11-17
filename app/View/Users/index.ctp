@@ -1,9 +1,9 @@
 <?php echo $this->element('header'); ?>
-<div class="jumbotron index">
-<h1>User List</h1>
+<div class="jumbotron">
+<h1><strong style="color: #6DB553;">U</strong>ser List</h1>
 </div>
 <?php echo $this->Flash->render('authorityError'); ?>
-<table class="table-bordered table-striped table-condensed" style="line-height: 2.5em;">
+<table class="table-bordered table-condensed" style="line-height: 2.5em;">
 	<thead>
 		<tr class="row" style="text-align:center;">
 			<th class="col-md-3"><?php echo __('UserName') ?></th>
@@ -18,7 +18,7 @@
 			<td class="col-md-4"><?php echo $user['User']['username']?></td>
 			<td class="col-md-3"><?php echo $user['Group']['groupname']; ?></td>
 			<td class="col-md-3"><?php echo $user['User']['created']; ?></td>
-			<td class="row col-md-2 btn-group"><?php
+			<td class="row col-md-2"><?php
 				echo $this->Html->link(
 					__('Edit'),array(
 						'controller'=>'users',
@@ -26,7 +26,7 @@
 						$user['User']['id'],
 					),
 					array(
-						'class'=>'col-md-6 btn btn-primary',
+						'class'=>'col-md-5 btn editBtn',
 					)
 				);
 				echo $this->Form->postLink(
@@ -37,8 +37,9 @@
 					),
 					array(
 						'confirm'=>__('Are you sure?'),
-						'class'=>'col-md-6 btn btn-warning',
+						'class'=>'col-md-5 btn deleteBtn',
 					)
+
 				);
 				?>
 			</td>

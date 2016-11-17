@@ -1,12 +1,13 @@
-<?php echo $this->element('header'); ?>
 <?php echo $this->Html->css('blog.css?'.date("YmdHis")); ?>
-<h1><?php echo __('Add Post'); ?></h1>
-<div class="add">
+<div class="jumbotron">
+<h1><strong style="color: #2D99FF;">A</strong>dd Post</h1>
+</div>
+<div id="postAddWrap">
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));
 echo $this->Form->input('title',array(
 	'label'=>__('Title'),
-	'class'=>'form-control',
+	'class'=>'form-control input-lg',
 	'div'=>array(
 		'class'=>'form-group',
 	),
@@ -17,13 +18,15 @@ echo $this->Form->input('Category.id',array(
 	'options'=>$category,
 	'empty'=>__('Not Selected'),
 	'div'=>array(
-		'class'=>'form-group dropup',
+		'class'=>'form-group',
 	),
 	'required'=>true,
 ));
+?><label>Tag</label><br/>
+<?php
 //HABTM でPostとTagを結びつけるために、Formの入力先はTag.Tag
 echo $this->Form->input('Tag.Tag',array(
-	'label'=>__('Tag'),
+	'label'=>false,
 	'options'=>$tag,
 	'multiple'=>'checkbox',
 	'class'=>'checkbox-inline',
@@ -35,7 +38,7 @@ echo $this->Form->textarea('body',array(
 	'div'=>array(
 		'class'=>'form-group',
 	),
-	'style'=>'margin-bottom: 20px;',
+	'style'=>'font-size: large;',
 ));
 ?>
 <div id="AttachmentsWrap">
@@ -66,7 +69,7 @@ echo $this->Form->input('Attachment.0.photo',array(
 echo $this->Form->button(
 	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Save Post'),array(
 	'type'=>'submit',
-	'class'=>'btn btn-primary btn-block',
+	'class'=>'btn addSaveBtn btn-block',
 	'div'=>array(
 		'class'=>'form-group',
 	),
@@ -75,7 +78,7 @@ echo $this->Form->button(
 ));
 echo $this->Form->end();
 ?>
-</div><!-- .add -->
+</div><!-- postAddWrap -->
 
 <script>
 	function beforeSubmit(){

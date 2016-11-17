@@ -2,7 +2,7 @@
 <div class="jumbotron index">
 <h1><?php echo __('Group List'); ?></h1>
 </div>
-<table class="table-bordered table-striped table-condensed" style="line-height: 2.5em;">
+<table class="table-bordered table-condensed" style="line-height: 2.5em;">
 	<thead>
 		<tr class="row">
 			<th class="col-md-4"><?php echo __('GroupName'); ?></th>
@@ -15,7 +15,7 @@
 		<tr class="row">
 			<td class="col-md-5"><?php echo $group['Group']['groupname']; ?></td>
 			<td class="col-md-5"><?php echo $group['Group']['created']; ?></td>
-			<td class="row col-md-2 btn-group"><?php
+			<td class="row col-md-2"><?php
 				echo $this->Html->link(
 					__('Edit'),array(
 						'controller'=>'groups',
@@ -23,7 +23,7 @@
 						$group['Group']['id'],
 					),
 					array(
-						'class'=>'col-md-6 btn btn-primary',
+						'class'=>'col-md-5 btn editBtn',
 					)
 				);
 				echo $this->Form->postLink(
@@ -34,7 +34,7 @@
 					),
 					array(
 						'confirm'=>__('Are you sure?'),
-						'class'=>'col-md-6 btn btn-warning',
+						'class'=>'col-md-5 btn deleteBtn',
 					)
 				);
 				?>

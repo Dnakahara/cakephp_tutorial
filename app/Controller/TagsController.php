@@ -25,6 +25,7 @@ class TagsController extends AppController{
 	}
 
 	public function edit($id = null){
+		debug($this->request->data);exit;
 		$this->Tag->id = $id;
 		if(!$this->Tag->exists()){
 			throw new NotFoundException(__('Invalid tag'));

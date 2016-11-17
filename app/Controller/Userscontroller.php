@@ -71,7 +71,7 @@ class UsersController extends AppController{
 		if($this->request->is('post')){
 			$this->User->create();
 			if($this->User->saveAll($this->request->data)){
-				$this->Flash->success(__('The user has been saved'));
+				$this->Flash->success(__('The user has been saved.(Now not LogIn)'));
 				return $this->redirect(array(
 					'controller'=>'users',
 					'action'=>'index',

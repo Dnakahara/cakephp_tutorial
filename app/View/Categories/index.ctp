@@ -2,7 +2,7 @@
 <div class="jumbotron index">
 <h1><?php echo __('Category List'); ?></h1>
 </div>
-<table class="table-bordered table-striped table-condensed" style="line-height: 2.5em;">
+<table class="table-bordered table-condensed" style="line-height: 2.5em;">
 	<thead>
 		<tr class="row">
 			<th><?php echo __('CategoryName'); ?></th>
@@ -13,7 +13,7 @@
 		<?php foreach($categories as $category): ?>
 		<tr class="row clickable-row">
 			<td class="col-md-10"><?php echo $category['Category']['categoryname']; ?></td>
-			<td class="col-md-2 row btn-group"><?php
+			<td class="col-md-2 row"><?php
 				echo $this->Html->link(
 					__('Edit'),array(
 						'controller'=>'categories',
@@ -21,7 +21,7 @@
 						$category['Category']['id'],
 					),
 					array(
-						'class'=>'col-md-6 btn btn-primary',
+						'class'=>'col-md-5 btn editBtn',
 					)
 				);
 				echo $this->Form->postLink(
@@ -32,7 +32,7 @@
 					),
 					array(
 						'confirm'=>__('Are you sure?'),
-						'class'=>'col-md-6 btn btn-warning',
+						'class'=>'col-md-5 btn deleteBtn',
 					)
 				);
 				?>

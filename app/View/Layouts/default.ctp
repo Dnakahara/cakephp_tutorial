@@ -42,7 +42,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 	<?php echo $this->Html->script('bootstrap.min.js'); ?>
 </head>
 <body style="padding-top: 52px;letter-spacing:0.1em;">
-	<div class="col-md-offset-2 col-md-8" style="background-image: url('img/cream-paper.png');background-color: #333333;padding-top: 15px;">
+	<div class="col-md-offset-2 col-md-8" style="background-image: url('/img/cream-paper.png');background-color: #333333;padding-top: 15px;">
 		<div id="header">
 			<nav class="navbar nav-tabs navbar-default navbar-fixed-top">
 				<ul class="nav navbar-nav" style="width: 100%;">
@@ -107,7 +107,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'id'=>'signupButton',
-								'class'=>'btn btn-success',
+								'class'=>'btn',
 							)
 						);
 						?>
@@ -121,7 +121,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 							),
 							array(
 								'id'=>'loginButton',
-								'class'=>'btn btn-md',
+								'class'=>'btn',
 							)
 						);
 						echo '</li>';
@@ -136,7 +136,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 						),
 						array(
 							'id'=>'logoutButton',
-							'class'=>'btn btn-md',
+							'class'=>'btn',
 						)
 					);
 					?>
@@ -187,9 +187,9 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<form id="zipcode-form" action="/zipcodes/search" method="POST">
 				<div class="input text form-group">
 					<label for="ZipcodeZipcode" class="control-label"><?php echo __('Zipcode');?></label>
-					<input name="data[Zipcode][zipcode]" maxlength="7" type="text" id="ZipcodeZipcode" class="form-control" />
+					<input name="data[Zipcode][zipcode]" maxlength="7" type="text" id="ZipcodeZipcode" class="form-control" required="true" />
 				</div>
-				<button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><?php echo __('Search');?></button>
+				<button class="btn btn-info" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span><?php echo __('Search');?></button>
 			</form>
 			<div class="input text form-group" id="address">
 				<label for="address" class="control-label"><?php echo __('Address');?></label>

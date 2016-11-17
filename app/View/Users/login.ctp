@@ -9,14 +9,14 @@
 		<?php
 		echo $this->Form->input('username',array(
 			'label'=>__('UserName'),
-			'class'=>'form-control',
+			'class'=>'form-control input-lg',
 			'div'=>array(
 				'class'=>'form-group',
 			),
 		));
 		echo $this->Form->input('password',array(
 			'label'=>__('Password'),
-			'class'=>'form-control',
+			'class'=>'form-control input-lg',
 			'div'=>array(
 				'class'=>'form-group',
 			),
@@ -24,7 +24,7 @@
 		echo $this->Form->button(
 			__('Log In!'),array(
 			'type'=>'submit',
-			'class'=>'btn btn-info btn-block',
+			'class'=>'btn loginBtn btn-block',
 			'div'=>array(
 				'class'=>'form-group',
 			),

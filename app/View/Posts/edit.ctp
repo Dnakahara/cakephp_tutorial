@@ -1,8 +1,8 @@
-<?php echo $this->element('header'); ?>
 <?php echo $this->Html->css('blog.css?'.date('YmdHis')); ?>
-<div class="jumbotron" style="background-color: #c4cbfc;font-wieght: 900;font-size: large;font-family: Times New Roman;">
-<h1>Edit Post</h1>
+<div class="jumbotron">
+<h1><strong style="color: #2D99FF;">E</strong>dit Post</h1>
 </div>
+<div id="postEditWrap">
 <?php
 echo $this->Form->create('Post',array('type'=>'file'));
 echo $this->Form->input('user_id',array('type'=>'hidden'));
@@ -14,7 +14,7 @@ echo $this->Form->input('title',array(
 		'class'=>'form-group',
 	),
 	'required'=>true,
-	'style'=>'font-size: large;font-weight: bold;',
+	'style'=>'font-size: x-large;font-weight: bold;',
 ));
 echo $this->Form->input('Category.id',array(
 	'label'=>__('Category'),
@@ -26,8 +26,10 @@ echo $this->Form->input('Category.id',array(
 	),
 	'required'=>true,
 ));
+?><label>Tag</label><br/>
+<?php
 echo $this->Form->input('Tag.Tag',array(
-	'label'=>__('Tag<br>'),
+	'label'=>false,
 	'options'=>$tag,
 	'multiple'=>'checkbox',
 	'selected'=>$selectedTag,
@@ -42,7 +44,7 @@ echo $this->Form->input('body',array(
 	'label'=>__('body'),
 	'rows'=>30,
 	'class'=>'form-control',
-	'style'=>'margin-bottom:30px;',
+	'style'=>'margin-bottom:30px;font-size: large;',
 	'div'=>array(
 		'class'=>'form-group',
 	),
@@ -67,10 +69,9 @@ echo '</div>';
 ?>
 <input type="hidden" name="data[Original][removedImages]" value="" id="PostremovedImages"/>
 <?php foreach($post['Attachment'] as $idx=>$data):  ?>
-<?php //for($i = 0; $i < count($post['Attachment']); $i++): ?>
-<div class="none PostremovedImages">
-	<input type="checkbox" name="data[Original][removedImages][]" value="<?php echo $idx ?>" id="PostremovedImages<?php echo $idx ?>" style="display:none;" />
-</div>
+	<div class="none PostremovedImages">
+		<input type="checkbox" name="data[Original][removedImages][]" value="<?php echo $idx ?>" id="PostremovedImages<?php echo $idx ?>" style="display:none;" />
+	</div>
 <?php endforeach; ?>
 <div id="AttachmentsWrap">
 	<div id="fileForms">
@@ -101,7 +102,7 @@ echo $this->Form->input('Attachment.0.photo',array(
 echo $this->Form->button(
 	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Save Post'),array(
 	'type'=>'submit',
-	'class'=>'btn btn-primary btn-block',
+	'class'=>'btn addSaveBtn btn-block',
 	'div'=>array(
 		'class'=>'form-group',
 	),
@@ -110,6 +111,7 @@ echo $this->Form->button(
 ));
 echo $this->Form->end();
 ?>
+</div><!-- postEditWrap -->
 
 <script>
 	function beforeSubmit(){

@@ -1,44 +1,51 @@
 <?php echo $this->Html->css('lightbox.min.css'); ?>
 <?php echo $this->Html->css('blog.css?'.date('YmdHis')); ?>
 <?php echo $this->Html->script('lightbox.min.js'); ?>
-<?php echo $this->element('header'); ?>
-<div id="post" style="font-family: 'Times New Roman',Symbol;">
-	<div class="jumbotron">
-		<h1><?php echo h($post['Post']['title']); ?></h1>
-	</div>
-	<p><small><?php echo __('Created: '); echo $post['Post']['created']; ?></small></p>
-	<p><?php echo __('Category: '); echo h($post['Category']['categoryname']); ?></p>
-	<p style="margin-bottom: 20px;"><?php echo __('Tag: '); ?>
+<div id="postView">
+	<div id="postContent">
+		<h1 class="postTitle" style="font-size: xx-large;color: #4D4E53;">
+			<?php echo '<strong style="color: #ffc337;">'.h($post['Post']['title'][0]).'</strong>'.h(mb_substr($post['Post']['title'],1,99,"utf-8")); ?>
+		</h1>
+		<?php
+		echo '<p class="postInfo">';
+			echo '<span class="glyphicon glyphicon-user" aria-hidden="true"></span>'.__('Author: ').$post['User']['username'];
+		echo '</p>'; 
+		echo '<p class="postInfo">';
+			echo '<span class="glyphicon glyphicon-flag" aria-hidden="true"></span>'.__('Category: ').$post['Category']['categoryname'];
+		echo '</p>';
+		echo '<ul class="postTags">';
+			foreach($post['Tag'] as $tag):
+				echo '<li class="postTag postInfo"><a id="tag-a" href="javascript:void(0)"><span>'.$tag['tagname'].'</span></a></li>';
+			endforeach;
+		echo '</ul>';
+		echo '<div style="clear: both;width: 0px;height: 0px;"></div>';
+		echo '<hr>';
+?>
+		<p id="postBody"><?php echo h($post['Post']['body']); ?></p>
+
 		<?php 
-		foreach($post['Tag'] as $tag):
-			echo h($tag['tagname']);
-		endforeach;
+		for($i = 0; $i < count($post['Attachment']); $i++){
+			if($i % 6 == 0){echo '<div class="row">';}
+			echo '<div class="col-md-2">';
+			echo $this->Html->image($imgSrcPrefix.$post['Attachment'][$i]['photo_dir'].DS.$post['Attachment'][$i]['photo'],array(
+				'class'=>'img-responsive thumbnail',
+				'id'=>'thumbnail'.$i,
+				'width'=>'256',
+			));
+			echo '</div>';
+			if($i % 6 == 5 || $i+1 >= count($post['Attachment'])){echo '</div>';}
+		}
 		?>
-	</p> 
-	<p><?php echo h($post['Post']['body']); ?></p>
 
-	<?php 
-	for($i = 0; $i < count($post['Attachment']); $i++){
-		if($i % 6 == 0){echo '<div class="row">';}
-		echo '<div class="col-md-2">';
-		echo $this->Html->image($imgSrcPrefix.$post['Attachment'][$i]['photo_dir'].DS.$post['Attachment'][$i]['photo'],array(
-			'class'=>'img-responsive thumbnail',
-			'id'=>'thumbnail'.$i,
-			'width'=>'256',
-		));
-		echo '</div>';
-		if($i % 6 == 5 || $i+1 >= count($post['Attachment'])){echo '</div>';}
-	}
-	?>
-
-	<div id="modal-overlay">
-		<div id="modal-content">
-			<img src="/images/close.png" alt="close modal" class="modalclose" />
+		<div id="modal-overlay">
+			<div id="modal-content">
+				<img src="/images/close.png" alt="close modal" class="modalclose" />
+			</div>
+			<div id="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
+			<div id="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
 		</div>
-		<div id="prev"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></div>
-		<div id="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></div>
-	</div>
-</div>
+	</div><!-- postContent -->
+</div><!-- postView -->
 
 <script>
 	(function(){
