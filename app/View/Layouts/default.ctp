@@ -43,7 +43,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 </head>
 <body style="padding-top: 52px;letter-spacing:0.1em;">
 	<div class="col-md-offset-2 col-md-8" style="background-image: url('/img/cream-paper.png');background-color: #333333;padding-top: 15px;">
-		<div id="header">
+		<header id="header">
 			<nav class="navbar nav-tabs navbar-default navbar-fixed-top">
 				<ul class="nav navbar-nav" style="width: 100%;">
 					<li class="nav-item col-md-offset-2" style="padding-left: 15px;">
@@ -161,14 +161,14 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					<?php endif; ?>
 				</ul>
 			</nav>
-		</div><!-- header -->
+		</header><!-- header -->
 		<div id="content">
 
 			<?php echo $this->Flash->render(); ?>
 			<?php echo $this->Flash->render('auth'); ?>
 			<?php echo $this->fetch('content'); ?>
 		</div>
-		<div id="footer">
+		<footer id="footer">
 			<?php
 			echo $this->Html->link(
 			$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
@@ -179,11 +179,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 			<p>
 				<?php echo $cakeVersion; ?>
 			</p>
-		</div>
+		</footer>
 		<?php #echo $this->element('sql_dump'); ?>
 	</div><!-- col-md-8 -->
 	<div class="col-md-2" style="margin-top: 52px;">
-		<div class="sidevar-nav" style="background-color: #bbb;padding: 10px;">
+		<aside class="sidevar-nav" style="background-color: #bbb;">
 			<form id="zipcode-form" action="/zipcodes/search" method="POST">
 				<div class="input text form-group">
 					<label for="ZipcodeZipcode" class="control-label"><?php echo __('Zipcode');?></label>
@@ -201,79 +201,8 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 					<option value="" selected="selected">Not Selected</option>
 				</select>
 			</div>
-		</div>
+		</aside>
 	</div>
-	<script>
-		function addressSelected(){
-			$('#address-input').val($("#address-select option:selected").text()); 
-			$('#address-select').css('display','none');
-			$('#address').css('display','block');
-			$('#address-select-options').html('<option value="" selected="selected">Not Selected</option>');
-		}
-
-		$(function(){
-			$('#address-select').change(addressSelected);
-
-			$('#zipcode-form').submit(function(event) {
-				// HTMLでの送信をキャンセル
-				event.preventDefault();
-
-				// 操作対象のフォーム要素を取得
-				var $form = $(this);
-
-				// 送信ボタンを取得
-				// （後で使う: 二重送信を防止する。）
-				var $button = $form.find('button');
-
-				// 送信
-				$.ajax({
-					url: $form.attr('action'),
-					type: $form.attr('method'),
-					data: $form.serialize(),
-					timeout: 10000,  // 単位はミリ秒
-					dataType: 'json',
-					
-					// 送信前
-					beforeSend: function(xhr, settings) {
-					     // ボタンを無効化し、二重送信を防止
-					     $button.attr('disabled', true);
-					},
-					// 応答後
-					complete: function(xhr, textStatus) {
-					     // ボタンを有効化し、再送信を許可
-					     $button.attr('disabled', false);
-					},
-					// 通信成功時の処理
-					success: function(result, textStatus, xhr) {
-						if(result.length === 1){
-							if(result[0]['Zipcode']['street'] === "以下に掲載がない場合"){
-								result[0]['Zipcode']['street'] = "";
-							}
-							$('#address-input').val(result[0]['Zipcode']['pref']+result[0]['Zipcode']['city']+result[0]['Zipcode']['street']);
-						}else if(result.length >= 2){
-							var options = '<option value="" selected="selected">Not Selected</option>';
-							for(var i = 0; i < result.length; ++i){
-								if(result[i]['Zipcode']['street'] === "以下に掲載がない場合"){
-									result[i]['Zipcode']['street'] = "";
-								}
-								var val = result[i]['Zipcode']['pref']+result[i]['Zipcode']['city']+ result[i]['Zipcode']['street'];
-								options += '<option value="' + val + '">' + val + '</option>';
-							}
-							$('#address').css('display','none');
-							$('#address-select-options').html(options);
-							$('#address-select').css('display','block');
-						}else{
-							$('#address-input').val('該当する住所はありません');
-							console.log('empty');
-						}
-					},
-					// 通信失敗時の処理
-					error: function(xhr, textStatus, error) {
-						console.error('error');
-					}
-				});
-			});
-		});
-	</script>
+	<?php echo $this->Html->script('layoutsDefault'); ?>
 </body>
 </html>

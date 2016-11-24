@@ -1,6 +1,6 @@
 <?php echo $this->Html->css('blog.css?'.date('YmdHis')); ?>
 <div class="jumbotron">
-<h1><strong style="color: #2D99FF;">E</strong>dit Post</h1>
+<h1><span style="color: #2D99FF;">E</span>dit Post</h1>
 </div>
 <div id="postEditWrap">
 <?php
@@ -13,6 +13,7 @@ echo $this->Form->input('title',array(
 	'div'=>array(
 		'class'=>'form-group',
 	),
+	'maxlength'=>26,
 	'required'=>true,
 	'style'=>'font-size: x-large;font-weight: bold;',
 ));
@@ -27,8 +28,9 @@ echo $this->Form->input('Category.id',array(
 	'required'=>true,
 ));
 ?><label>Tag</label><br/>
+<p id="tagLimitMsg" data-TAGMAX='<?php echo json_encode($TAGMAX, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>'><small>the number of tags is limited between 0 and <?php echo $TAGMAX; ?>.</small></p>
 <?php
-echo $this->Form->input('Tag.Tag',array(
+echo $this->Form->input('Post.Tag',array(
 	'label'=>false,
 	'options'=>$tag,
 	'multiple'=>'checkbox',
@@ -50,7 +52,9 @@ echo $this->Form->input('body',array(
 	),
 ));
 
-echo '<p style="color: #a55;">'.__('Please select images you want to delete').'</p>';
+if(isset($post['Attachment']) && !empty($post['Attachment'])){
+	echo '<p style="color: #a55;">'.__('Please select images you want to delete').'</p>';
+}
 
 echo '<div id="thumbnailRowWrap">';
 for($i = 0; $i < count($post['Attachment']); $i++){
@@ -83,6 +87,7 @@ echo $this->Form->input('Attachment.0.photo',array(
 	'label'=>false,
 	'type'=>'file',
 	'div'=>false,
+	'required'=>false,
 	'style'=>'display:none;',
 	'onchange'=>'fileChange(this)',
 ));
@@ -112,81 +117,4 @@ echo $this->Form->button(
 echo $this->Form->end();
 ?>
 </div><!-- postEditWrap -->
-
-<script>
-	function beforeSubmit(){
-		let $thumbnails = $('#thumbnailRowWrap .thumbnail');
-		for(var i = 0; i < $thumbnails.length; ++i){
-			if($thumbnails.eq(i).hasClass('removed')){
-				let img = '#PostremovedImages'+i;
-				$(img).prop('checked',true);
-			}
-		}
-
-		let $fileForms = $('#fileForms>.fileForm');
-		for(var i = 0; i < $fileForms.length; ++i){
-			$fileForms.eq(i).attr('name','data[Attachment]['+i+'][photo]');
-		}
-	}
- 
-	function clickPropagate(fileThumbnail){
-		let idx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
-		$('#fileForms>.fileForm').eq(idx).click();
-	}
-
-	function fileChange(fileForm){
-		let $fileForms = $('#fileForms>.fileForm');
-		let $fileThumbnails = $('#fileThumbnails>.fileThumbnail');
-		let fileFormIdx = $fileForms.index($(fileForm));
-		if($(fileForm).val()==''){
-			$(fileForm).remove();
-			$fileThumbnails.eq(fileFormIdx).remove();
-			return;
-		}
-		
-		$fileThumbnails.eq(fileFormIdx).children('span').html($(fileForm).val().replace("C:\\fakepath\\",""));
-
-		let removeButton = '<a class="btn btn-inline pull-right"style="background-color: rgba(0,0,0,0.7);" onclick="uploadCancel(this.parentNode)">'
-				 + '	<span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: #f55;background-color: rgba(0,0,0,0);"></span>'
-				 + '</a>';
-		$fileThumbnails.eq(fileFormIdx).append(removeButton);
-		
-		if(fileFormIdx + 1 < $fileForms.length){return;}
-
-		let nextFileForm = '<input type="file" class="file-input fileForm" onchange="fileChange(this)" style="display: none;"/>';
-		let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
-				      + '<a class="btn btn-inline"style="background-color: #00eeff">'
-				      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
-				      + '</a>'
-				      + '<span class="input-xlg uneditable-input">select file</span>'
-				      + '</div>';
-		$('#fileForms').append(nextFileForm);
-		$('#fileThumbnails').append(nextFileThumbnail);
-	}
-	
-	function uploadCancel(fileThumbnail){
-		event.stopPropagation();
-		let fileThumbnailIdx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
-		$(fileThumbnail).remove();
-		$('#fileForms>.fileForm').eq(fileThumbnailIdx).remove();
-		return;
-	}
-
-	$(function(){
-		$('.imageCover').on('click','.thumbnail', function(){
-			if($(this).hasClass('removed')){
-				$(this).removeClass('removed');
-				$(this).parent().html(this.outerHTML);
-			}
-			else{
-				$(this).addClass('removed');
-				$(this).parent().html(this.outerHTML + '<span class="coverImage glyphicon glyphicon-remove" aria-hidden="true"></span>');
-			}
-		});
-
-		$('.imageCover').on('click','span', function(){
-			$(this).siblings().removeClass('removed');
-			$(this).parent().html($(this).siblings()[0]);
-		});
-	});
-</script>
+<?php echo $this->Html->script('postsEdit',array('inline'=>true,)); ?>

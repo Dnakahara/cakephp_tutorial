@@ -1,5 +1,4 @@
-<?php echo $this->element('header'); ?>
-<div class="users form">
+<div class="usersAddForm">
 <?php echo $this->Form->create('User'); ?>
 	<fieldset>
 		<legend><?php 
@@ -11,7 +10,7 @@
 				'class'=>'form-control input-lg',
 				'required'=>true,
 				'div'=>array(
-					'class'=>'form-group',
+					'class'=>'form-group required',
 				),
 			));
 			echo $this->Form->input('password',array(

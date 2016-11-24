@@ -31,6 +31,10 @@ class User extends AppModel{
 				'rule'=>'notBlank',
 				'message'=>'Username is required',
 			),
+			'lengthBetween'=>array(
+				'rule'=>array('lengthBetween',1,10),
+				'message'=>'The number of charachter of User Name is limited between 1 and 10',
+			),
 		),
 		'password'=>array(
 			'alphaNumeric'=>array(
@@ -41,16 +45,13 @@ class User extends AppModel{
 				'rule'=>'notBlank',
 				'message'=>'Password is not blank',
 			),
+			'lengthBetween'=>array(
+				'rule'=>array('lengthBetween',6,20),
+				'message'=>'The number of charachter of password is limited between 6 and 20',
+			),
 			'passwordConfirm'=>array(
 				'rule'=>'passwordConfirm',
 				'message'=>'Please input same password again',
-			),
-		),
-		'gourp_id'=>array(
-			'inList'=>array(
-				'rule'=>array('inList',array(1,2)),
-				'message'=>'Please enter a valid Group',
-				'allowEmpty'=>false,
 			),
 		),
 		'confirm'=>array(

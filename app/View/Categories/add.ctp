@@ -1,12 +1,12 @@
-<div class="groupAddForm">
-<?php echo $this->Form->create('Group'); ?>
+<div class="categoryAddForm">
+<?php echo $this->Form->create('Category'); ?>
 	<fieldset>
 		<legend><?php
-			echo __('Please input New Group Name');
+			echo __('Please input New Category Name');
 		?></legend>
 		<?php
-		echo $this->Form->input('groupname',array(
-			'label'=>__('GroupName'),
+		echo $this->Form->input('categoryname',array(
+			'label'=>__('CategoryName'),
 			'class'=>'form-control input-lg',
 			'required'=>true,
 			'div'=>array(

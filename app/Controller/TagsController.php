@@ -2,14 +2,23 @@
 App::uses('AppController','Controller');
 
 class TagsController extends AppController{
+	public $uses = array('Tag');	
+	
 	public function index(){
 		$this->Tag->recursive=0;
+		$this->paginate = array(
+			'order'=>array(
+				'Tag.id'=>'asc'
+			),
+			'limit'=>30,
+			'maxLimit'=>30,
+		);
 		$this->set('tags',$this->paginate());
 	}
 
 	public function add(){
 		if($this->request->is('post')){
-			$this->Tag->crate();
+			$this->Tag->create();
 			if($this->Tag->saveAll($this->request->data)){
 				$this->Flash->success(__('The tag has been saved'));
 				return $this->redirect(array(
@@ -25,13 +34,17 @@ class TagsController extends AppController{
 	}
 
 	public function edit($id = null){
-		debug($this->request->data);exit;
+		if(!$id){
+			throw new NotFoundException(__('Invalid tag'));
+		}
+
 		$this->Tag->id = $id;
 		if(!$this->Tag->exists()){
 			throw new NotFoundException(__('Invalid tag'));
 		}
+
 		if($this->request->is('post') || $this->request->is('put')){
-			if($this->Tag->save($this->reqeust->data)){
+			if($this->Tag->save($this->request->data)){
 				$this->Flash->success(__('The tag has been saved'));
 				return $this->redirect(array('action'=>'index'));
 			}

@@ -1,6 +1,6 @@
 <?php echo $this->Html->css('blog.css?'.date("YmdHis")); ?>
 <div class="jumbotron">
-<h1><strong style="color: #2D99FF;">A</strong>dd Post</h1>
+<h1><span style="color: #2D99FF;">A</span>dd Post</h1>
 </div>
 <div id="postAddWrap">
 <?php
@@ -8,6 +8,7 @@ echo $this->Form->create('Post',array('type'=>'file'));
 echo $this->Form->input('title',array(
 	'label'=>__('Title'),
 	'class'=>'form-control input-lg',
+	'maxlength'=>26,
 	'div'=>array(
 		'class'=>'form-group',
 	),
@@ -23,13 +24,15 @@ echo $this->Form->input('Category.id',array(
 	'required'=>true,
 ));
 ?><label>Tag</label><br/>
+<p id="tagLimitMsg" data-TAGMAX='<?php echo json_encode($TAGMAX, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>'><small>the number of tags is limited between 0 and <?php echo $TAGMAX; ?>.</small></p>
 <?php
-//HABTM でPostとTagを結びつけるために、Formの入力先はTag.Tag
-echo $this->Form->input('Tag.Tag',array(
+//HABTM でPostとTagを結びつけるために、Formの入力先はPost.Tag
+echo $this->Form->input('Post.Tag',array(
 	'label'=>false,
 	'options'=>$tag,
 	'multiple'=>'checkbox',
 	'class'=>'checkbox-inline',
+	'id'=>'TagTag',
 ));
 echo $this->Form->textarea('body',array(
 	'label'=>__('Body'),
@@ -51,6 +54,7 @@ echo $this->Form->input('Attachment.0.photo',array(
 	'label'=>false,
 	'type'=>'file',
 	'div'=>false,
+	'required'=>false,
 	'style'=>'display:none;',
 	'onchange'=>'fileChange(this)',
 ));
@@ -79,60 +83,4 @@ echo $this->Form->button(
 echo $this->Form->end();
 ?>
 </div><!-- postAddWrap -->
-
-<script>
-	function beforeSubmit(){
-		let $fileForms = $('#fileForms>.fileForm');
-		for(var i = 0; i < $fileForms.length; ++i){
-			$fileForms.eq(i).attr('name','data[Attachment]['+i+'][photo]');
-		}
-	}
- 
-	function clickPropagate(fileThumbnail){
-		let idx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
-		$('#fileForms>.fileForm').eq(idx).click();
-	}
-
-	function fileChange(fileForm){
-		let $fileForms = $('#fileForms>.fileForm');
-		let $fileThumbnails = $('#fileThumbnails>.fileThumbnail');
-		let fileFormIdx = $fileForms.index($(fileForm));
-		if($(fileForm).val()==''){
-			$(fileForm).remove();
-			$fileThumbnails.eq(fileFormIdx).remove();
-			return;
-		}
-		
-		$fileThumbnails.eq(fileFormIdx).children('span').html($(fileForm).val().replace("C:\\fakepath\\",""));
-
-		let removeButton = '<a class="btn btn-inline pull-right"style="background-color: rgba(0,0,0,0.7);" onclick="uploadCancel(this.parentNode)">'
-				 + '	<span class="glyphicon glyphicon-remove" aria-hidden="true" style="color: #f55;background-color: rgba(0,0,0,0);"></span>'
-				 + '</a>';
-		$fileThumbnails.eq(fileFormIdx).append(removeButton);
-		
-		if(fileFormIdx + 1 < $fileForms.length){return;}
-
-		let nextFileForm = '<input type="file" class="file-input fileForm" onchange="fileChange(this)" style="display: none;"/>';
-		let nextFileThumbnail = '<div class="fileThumbnail" onclick="clickPropagate(this)" style="margin-bottom: 20px;border: ridge 2px #000000;border-radius: 0.4em;">'
-				      + '<a class="btn btn-inline"style="background-color: #00eeff">'
-				      + '<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>'
-				      + '</a>'
-				      + '<span class="input-xlg uneditable-input">select file</span>'
-				      + '</div>';
-		$('#fileForms').append(nextFileForm);
-		$('#fileThumbnails').append(nextFileThumbnail);
-	}
-	
-	function uploadCancel(fileThumbnail){
-		event.stopPropagation();
-		let fileThumbnailIdx = $('#fileThumbnails>.fileThumbnail').index($(fileThumbnail));
-		$(fileThumbnail).remove();
-		$('#fileForms>.fileForm').eq(fileThumbnailIdx).remove();
-		return;
-	}
-	$(function(){
-		$('#file-input').change(function() {
-			$('#cover').html($(this).val().replace("C:\\fakepath\\",''));
-		});
-	});
-</script>
+<?php echo $this->Html->script('postsAdd',array('inline'=>true,)); ?>

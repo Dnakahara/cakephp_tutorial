@@ -2,14 +2,23 @@
 App::uses('AppController','Controller');
 
 class CategoriesController extends AppController{
+	public $uses = array('Category');	
+
 	public function index(){
 		$this->Category->recursive=0;
+		$this->paginate = array(
+			'order'=>array(
+				'Category.id'=>'asc'
+			),
+			'limit'=>30,
+			'maxLimit'=>30,
+		);
 		$this->set('categories',$this->paginate());
 	}
 
 	public function add(){
 		if($this->request->is('post')){
-			$this->Category->crate();
+			$this->Category->create();
 			if($this->Category->saveAll($this->request->data)){
 				$this->Flash->success(__('The category has been saved'));
 				return $this->redirect(array(
@@ -25,12 +34,16 @@ class CategoriesController extends AppController{
 	}
 
 	public function edit($id = null){
+		if(!$id){
+			throw new NotFoundException(__('Invalid category'));
+		}
+
 		$this->Category->id = $id;
 		if(!$this->Category->exists()){
 			throw new NotFoundException(__('Invalid category'));
 		}
 		if($this->request->is('post') || $this->request->is('put')){
-			if($this->Category->save($this->reqeust->data)){
+			if($this->Category->save($this->request->data)){
 				$this->Flash->success(__('The category has  been saved'));
 				return $this->redirect(array('action'=>'index'));
 			}

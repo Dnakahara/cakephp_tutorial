@@ -1,6 +1,6 @@
 <?php echo $this->element('header'); ?>
 <div class="jumbotron">
-<h1><strong style="color: #6DB553;">U</strong>ser List</h1>
+<h1><span style="color: #6DB553;">U</span>ser List</h1>
 </div>
 <?php echo $this->Flash->render('authorityError'); ?>
 <table class="table-bordered table-condensed" style="line-height: 2.5em;">
@@ -48,3 +48,37 @@
 	</tbody>
 	<?php unset($users); ?>
 </table>
+<div class="pagination">
+	<?php
+	// 次ページと前ページのリンクを表示する
+	echo $this->Paginator->prev(
+		'< Previous',
+		null,
+		null,
+		array(
+			'class' => 'disabled prev',
+		)
+	);
+	// ページ番号を表示する
+	echo $this->Paginator->numbers(array(
+		'modulus'=>8,
+		'first'=>1,
+		'last'=>1,
+	));
+
+	echo $this->Paginator->next(
+		'Next >',
+		null,
+		null,
+		array(
+			'class' => 'disabled next',
+		)
+	);
+	?>
+	<div id="pageCounter">
+	<?php
+	// 現在のページ番号 / 全ページ数 を表示する
+	echo $this->Paginator->counter();
+	?>
+	</div>
+</div>

@@ -23,6 +23,9 @@ class PostsController extends AppController{
 	public $uses = array('Post','User','Attachment','Tag','PostsTag','Category');	
 	public $presetVars = true;
 
+	// (the number of tags per post) <= TAGMAX
+	const TAGMAX = 4;
+
 	private function trimUploaded(){
 		//saveしようとしている記事中の未入力のファイルフォームからのデータは取り除く
 		for($i = 0; $i < count($this->request->data['Attachment']);$i++){
@@ -33,7 +36,9 @@ class PostsController extends AppController{
 		}
 
 		//取り除くだけでは連想配列の添え字がずれているので0から詰める
-		array_values($this->request->data['Attachment']);
+		if(!empty($this->request->data['Attachment'])){
+			array_values($this->request->data['Attachment']);
+		}
 
 		//結局一つもファイルがアップロードされていなかったら、
 		//空のデータをattachments テーブルに保存しないために、
@@ -41,6 +46,12 @@ class PostsController extends AppController{
 		if(count($this->request->data['Attachment']) == 0){
 			$this->Post->unbindModel(array('hasMany'=>'Attachment'));
 			unset($this->request->data['Attachment']);
+		}
+	}
+
+	public function trimTaged(){
+		if(count($this->request->data['Tag']['Tag']) > self::TAGMAX){
+			$this->request->data['Tag']['Tag'] = array_slice($this->request->data['Tag']['Tag'], 0, self::TAGMAX);
 		}
 	}
 
@@ -108,15 +119,22 @@ class PostsController extends AppController{
 
 	public function add(){
 		if($this->request->is('post')){
+//			debug($this->request->data);exit;
 			$this->Post->create();
 			
 			$this->request->data['Post']['user_id'] = $this->Auth->user('id');
 
-			$this->trimUploaded();
+			if(isset($this->request->data['Attachment'])){
+				$this->trimUploaded();
+			}
+
+			if(isset($this->request->data['Tag'])){
+				$this->trimTaged();
+			}
 
 			if($this->Post->saveAll($this->request->data,array('deep'=>true))){
 				$this->Flash->success(__('Your post has been saved.'));
-				$this->redirect(array('action'=>'index'));
+				return $this->redirect(array('action'=>'index'));
 			}
 		}
 		$this->set('category',$this->Category->find('list',array(
@@ -125,6 +143,9 @@ class PostsController extends AppController{
 		$this->set('tag',$this->Tag->find('list',array(
 			'fields'=>array('Tag.tagname'),
 		)));
+
+		// (the number of tags per post) <= $this->TAGMAX
+		$this->set('TAGMAX',self::TAGMAX);
 	}
 
 	public function edit($id = null){
@@ -145,17 +166,26 @@ class PostsController extends AppController{
 			}
 			
 			$this->Post->id = $this->request->data['Post']['id'];
-			$nowUploaded = $this->request->data['Attachment'];
+			
+			if(isset($this->request->data['Tag'])){
+				$this->trimTaged();
+			}
+
+			if(isset($this->request->data['Attachment'])){
+				$nowUploaded = $this->request->data['Attachment'];
+			}
 
 			
 			$this->request->data['Attachment'] = $post['Attachment'];
-			if($nowUploaded !== null){
+			if(isset($nowUploaded)){
 				foreach($nowUploaded as $img){
 					$this->request->data['Attachment'] []= $img;
 				}
 			}
 
-			$this->trimUploaded();
+			if(isset($this->request->data['Attachment'])){
+				$this->trimUploaded();
+			}
 
 			if($this->Post->saveAll($this->request->data,array('deep'=>true))){
 				if(!empty($this->request->data['Original']['removedImages'])){
@@ -198,6 +228,9 @@ class PostsController extends AppController{
 			$selectedTag []= $tag['id'];
 		}
 		$this->set('selectedTag',$selectedTag);
+
+		// (the number of tags per post) <= self::TAGMAX
+		$this->set('TAGMAX',self::TAGMAX);
 
 		$imgSrcPrefix = '..'.DS.'..'.DS.'files'.DS.'attachment'.DS.'photo'.DS;
 		$this->set('imgSrcPrefix',$imgSrcPrefix);

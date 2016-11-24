@@ -51,11 +51,19 @@ class Post extends AppModel {
 				'rule'=>'notBlank',
 				'message'=>'Title is required',
 			),
+			'lengthBetween'=>array(
+				'rule'=>array('lengthBetween',1,26),
+				'message'=>'The number of charachter of Title is limited between 1 and 13',
+			),
 		),
 		'body'=>array(
 			'notBlank'=>array(
 				'rule'=>'notBlank',
 				'message'=>'Body is required',
+			),
+			'lengthBetween'=>array(
+				'rule'=>array('lengthBetween',1,40000),
+				'message'=>'The number of charachter of Body is limited between 1 and 6000',
 			),
 		),
 		'category_id'=>array(
@@ -64,12 +72,20 @@ class Post extends AppModel {
 				'message'=>'Category is required',
 			),
 		),
+		'Tag' => array(
+			'rule' => array('multiple', array(
+				'min' => 0,
+				'max' => 4,
+			)),
+			'message' => 'Tag Number  Error',
+		),
 	);
 
 	public $hasMany = array(
 		'Attachment'=>array(
 			'className'=>'Attachment',
 			'foreignKey'=>'post_id',
+			'dependent'=>true,
 		)
 	);
 

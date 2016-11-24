@@ -19,6 +19,9 @@ class Attachment extends AppModel{
 		)
 	);
 
+	public $validate = array(
+	);
+
 	public $belongsTo = array(
 		'Post'=>array(
 			'className'=>'Post',

@@ -2,8 +2,16 @@
 App::uses('AppController','Controller');
 
 class GroupsController extends AppController{
+	public $uses = array('Group');	
 	public function index(){
 		$this->Group->recursive=0;
+		$this->paginate = array(
+			'order'=>array(
+				'Group.id'=>'asc'
+			),
+			'limit'=>30,
+			'maxLimit'=>30,
+		);
 		$this->set('groups',$this->paginate());
 	}
 
@@ -24,9 +32,13 @@ class GroupsController extends AppController{
 	}
 
 	public function edit($id = null){
+		if(!$id){
+			throw new NotFoundException(__('Invalid group'));
+		}
+
 		$this->Group->id = $id;
 		if(!$this->Group->exists()){
-			throw new NotFoundException(__('Invalid user'));
+			throw new NotFoundException(__('Invalid group'));
 		}
 
 		if($this->request->is('post') || $this->request->is('put')){

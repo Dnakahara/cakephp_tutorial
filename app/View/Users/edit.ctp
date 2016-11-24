@@ -4,32 +4,33 @@
 <div id="userEditWrap">
 <?php
 echo $this->Form->create('User');
-echo $this->Form->input('user_id',array('type'=>'hidden'));
+echo $this->Form->input('id',array('type'=>'hidden'));
 echo $this->Form->input('username',array(
 	'label'=>__('UserName'),
 	'class'=>'form-control input-lg',
 	'div'=>array(
 		'class'=>'form-group',
 	),
+	'required'=>true,
 ));
 echo $this->Form->input('password',array(
 	'type'=>'password',
 	'label'=>__('NewPassword'),
 	'class'=>'form-control input-lg',
-	'required'=>true,
 	'div'=>array(
 		'class'=>'password form-group',
 	),
+	'required'=>true,
 	'value'=>'',
 ));
 echo $this->Form->input('confirm',array(
 	'type'=>'password',
 	'label'=>__('NewPassword Again'),
 	'class'=>'form-control input-lg',
-	'required'=>true,
 	'div'=>array(
-		'class'=>'input password form-group',
+		'class'=>'password form-group',
 	),
+	'required'=>true,
 	'value'=>'',
 ));
 echo $this->Form->button(

@@ -1,13 +1,13 @@
 <?php echo $this->Html->css('blog.css?'.date('YmdHis')); ?>
 <div class="jumbotron">
-<h1><strong style="color: #2D99FF;">E</strong>dit Group</h1>
+<h1><strong style="color: #2D99FF;">E</strong>dit Tag</h1>
 </div>
-<div id="groupEditWrap">
+<div id="tagEditWrap">
 <?php
-echo $this->Form->create('Group');
-echo $this->Form->input('groupname',array(
+echo $this->Form->create('Tag');
 echo $this->Form->input('id',array('type'=>'hidden'));
-	'label'=>__('Group Name'),
+echo $this->Form->input('tagname',array(
+	'label'=>__('Tag Name'),
 	'class'=>'form-control input-lg',
 	'div'=>array(
 		'class'=>'form-group',
@@ -16,7 +16,7 @@ echo $this->Form->input('id',array('type'=>'hidden'));
 	'style'=>'font-size: x-large;font-weight: bold;',
 ));
 echo $this->Form->button(
-	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Save'),array(
+	'<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>'.__('Save This'),array(
 	'type'=>'submit',
 	'class'=>'btn addSaveBtn btn-block',
 	'div'=>array(
